@@ -1,0 +1,64 @@
+@import "variables";
+//@import 'fonts/roboto/roboto.css';
+//@import 'fonts/raleway/raleway.css';
+//@import './fonts/fontello/css/fontello.css';
+//@import './fonts/fontello/css/animation.css';
+
+//@import "./fonts/font-awesome-4.7.0/css/font-awesome.min.css";
+//@import "./fonts/Montserrat.css";
+//@import './fonts/robotocondensed/robotocondensed.css';
+
+
+.content {
+  //display: none;
+}
+
+.div1, .div2, .div3 {
+  display: none;
+  width: 100%;
+}
+
+.div1 {
+  background: yellow;
+}
+
+.div2 {
+  background: darkcyan;
+}
+
+.div3 {
+  background: crimson;
+}
+
+.close-button-class {
+  width: 40px;
+    background: #202127;
+
+  i {
+    font-style: normal;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    left: 30%;
+    line-height: 1em;
+    transition: all 500ms ease;
+  }
+
+  &:hover {
+  background: #4d555d;
+    color: crimson;
+
+    i {
+      transform: rotate(270deg);
+    }
+  }
+
+}
+
+
+
+
+
+

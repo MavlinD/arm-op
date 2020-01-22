@@ -1,0 +1,32 @@
+.regions .allList{
+  border: #242e2e 1px solid;
+  background: rgb(247, 247, 247);
+}
+
+
+.regions .listItem:nth-child(odd){
+  background: #cecece;
+}
+
+.regions .listItem:nth-child(even){
+  background: #b5b5b5;
+}
+
+.regions .listItem:hover{
+  cursor: pointer;
+  color: #007bff;
+}
+
+#poptest{
+  z-index: 500;
+  top: 50%;
+  left: 50%;
+}
+
+.Balance_PS{
+}
+
+.regions{
+  font-size: 1.2em;
+
+}

@@ -1,0 +1,35 @@
+@font-face {
+    font-family: icomoon;
+    src: url('./fonts/icomoon/icomoon.woff?-xtshf1') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+e60b, U+e660, U+e65f, U+e67c, U+e6fe, U+e701, U+e635, U+e6a6, U+e674, U+e6fb, U+e6fd, U+e60c,
+    U+e670, U+e6ff, U+e72a, U+e730, U+e72a, U+e72e, U+e70a, U+e702, U+e79d, U+e79c, U+e68d, U+e7a2, U+e604, U+e60a,
+    U+e60b, U+e6cf, U+e6e5, U+e6e9, U+e79a, U+e6e1, U+e76d, U+e6e6, U+e71d, U+e63f, U+e6a0, U+e655, U+e786, U+e001,
+    U+e649, U+e646, U+e797, U+e643;
+    /*unicode-range: U+e600-e2300;*/
+    /* https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/webfont-optimization?hl=ru */
+}
+
+@font-face {
+font-family: FontAwesome;
+src: url('./fonts/avesome/fontawesome-webfont.woff?v=4.4.0') format('woff');
+font-weight: normal;
+font-style: normal;
+unicode-range: U+f109, U+f100, U+f101, U+f1b9, U+f0d6, U+f255, U+f256, U+f257, U+f258, U+f259, U+f182, U+f183, U+f0c7;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: local('Raleway Regular'), local('Raleway-Regular'), url('./fonts/raleway/ralewayregular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), local('Roboto'), url('./fonts/roboto/Roboto.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
