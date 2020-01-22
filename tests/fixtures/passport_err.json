@@ -1,0 +1,13 @@
+{
+  "code": 1,
+  "data": {
+    "path": "...anything..."
+  },
+  "message": "Something went wrong...(",
+  "query": {
+    "field-1": "xxxxxxxxxxx",
+    "field-2": "yyyyyyyyyyy"
+  }
+}
+
+

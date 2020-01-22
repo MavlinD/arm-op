@@ -1,6 +1,6 @@
 # Сервис выдачи паспортов качества потребителям
 
-## Build Setup:
+### Build Setup:
 
 ``` bash
 # Download repository:
