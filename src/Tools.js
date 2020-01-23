@@ -45,6 +45,7 @@ function Fetch(arg) {
   this.run = () => {
     // log(this.body)
     return new Promise((resolve, reject) => {
+      // debugger
       fetch(this.url(), {
         method: this.method,
         body: this.method === 'POST' ? JSON.stringify(this.body) : null,
@@ -368,9 +369,9 @@ class Query {
         // log(response)
         // debugger
         // console.log(arg)
-        if (typeof arg.fn === "function") {
-          arg.fn(response)
-        }
+        // if (typeof arg.fn === "function") {
+        //   arg.fn(response)
+        // }
         this.success(response);
       } else {
         log(response.message, response.data);
