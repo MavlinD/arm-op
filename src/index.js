@@ -26,7 +26,7 @@ import {Form} from "./Tools";
 
 
 let root, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, root_class, form, loader,
-  link, fileName
+  link, fileName, err
 rnd = Math.round(Math.random() * 1000)
 form = 'form' + rnd
 field_1 = 'field_1' + rnd
@@ -38,18 +38,19 @@ placeholder_2 = 'Field-2'
 root_class = 'root' + rnd
 loader = 'loader' + rnd
 link = 'link' + rnd
+err = 'err' + rnd
 
 root = T.gid('root')
 
 html = `<div class="container-fluid div2">
 <div class="row">
 <h3 class="mx-auto p-3 w-100 text-align-center">Сервис выдачи паспортов качества</h3>
-<form id="${form}" class="mx-auto p-4 col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3 form-inline22">
+<form id="${form}" class="mx-auto px-4 py-2 col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3">
   <div class="form-group">
     <label for="${field_1}">Field-1</label>
     <div class="row">
         <input type="text" required class="form-control col-9" id="${field_1}" aria-describedby="${aria_desc_1}"
-       placeholder="${placeholder_1}" value="1111111111">
+       placeholder="${placeholder_1}" value="10">
         <div class="col-3">
             <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_1}"><i class="icon-cancel"></i></button>
         </div>
@@ -67,7 +68,7 @@ html = `<div class="container-fluid div2">
     </div>
     <small id="${aria_desc_2}" class="form-text text-muted">Describe this field</small>
   </div>
-  <button type="submit" class="btn btn-primary mx-auto d-block" data-a="submit" data-r="submit">
+  <button type="submit" class="btn btn-primary mx-auto d-block my-4" data-a="submit" data-r="submit">
   <i id="${loader}" class="d-none icon-spin2 animate-spin"></i>
   <i class="icon-paper-plane"></i>
   Search & Download</button>
@@ -96,10 +97,9 @@ const query = () => {
     type: 'POST',
     data: {
       box: 'LNTR2',
+      act: 'lntr',
       wagon: sels.field_1.value,
       consignment: sels.field_2.value,
-      path: document.location.pathname,
-      act: 'lntr',
     },
     success(a) {
       console.log(a.query)
@@ -108,19 +108,25 @@ const query = () => {
         sels.loader.classList.add('d-none')
         // debugger
         fileName = `Passport-${sels.field_1.value}-${sels.field_2.value}.pdf`
+
         if (a.query.wagon !== '0') {
           if (!sels.link) {
-            $(sels.form).append(`<div id="${link}" style="display: none;" class="w-100 d-flex justify-content-center">
-<a class="mt-4" href="http://0.0.0.0:8080/src/tests/fixtures/test.pdf"
+            console.log('it found')
+            $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
+<a class="my-4" href="http://0.0.0.0:8080/src/tests/fixtures/test.pdf"
 download="${fileName}">${fileName}</a></div>
-`).find(`#${link}`).slideDown('fast')
+`)
+              $(`#${link}`).slideDown('fast')
             sels.link = T.gid(link)
           } else {
-            $(`#${link}`).find('a').html(fileName)
+            $(`#${link}`).find('a').html(fileName).end().slideDown('fast')
           }
         } else {
-          console.log('Error!')
-
+          console.log('data not found (!')
+          $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
+class="alert alert-danger"><span>not found</span></div>`)//
+          $(`#${link}`).slideUp('fast')
+          $(`#${err}`).slideDown('fast')//.delay(1500).slideUp()
 
         }
       }, 500)
@@ -142,6 +148,7 @@ const handlers = {
     if (sels.field_1.value && sels.field_2.value) {
       elements.form.setDisable(true)
       sels.loader.classList.remove('d-none')
+      $(`#${err}`).slideUp('fast')
 
       // let response = await fetch('http://0.0.0.0:8080/src/tests/fixtures/test.pdf');
       // let blob = await response.blob(); // скачиваем как Blob-объект

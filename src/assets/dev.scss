@@ -58,7 +58,13 @@
 }
 
 
+form, div{
+  outline: $outline-blue;
+}
 
+button, h3{
+  outline: $outline-crimson;
+}
 
 
 
