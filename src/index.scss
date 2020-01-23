@@ -1,9 +1,15 @@
 // use only for index page
+@import 'assets/fonts/fontello/css/fontello.css';
+@import 'assets/fonts/fontello/css/animation.css';
 
 #root{
   >.container-fluid{
     //background: #007bff;
     //height: ;
+  }
+
+  i{
+    font-family: fontello;
   }
 }
 

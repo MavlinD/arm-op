@@ -72,7 +72,7 @@ let facade = (
           }
           // }
           // }
-          if (e.target.tagName === 'A') e.preventDefault();
+          // if (e.target.tagName === 'A') e.preventDefault();
           if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
           if (e.target.tagName === 'IMG') {
             e.preventDefault();
