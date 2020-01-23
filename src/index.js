@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery'
 // import 'assets/fonts/roboto/roboto.css'; // !!! on in build
 // import 'assets/fonts/raleway/raleway.css'; // !!! on in build
 // import 'assets/mylibs.scss';
@@ -25,7 +26,7 @@ import {Form} from "./Tools";
 
 
 let root, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, root_class, form, loader,
-  link
+  link, fileName
 rnd = Math.round(Math.random() * 1000)
 form = 'form' + rnd
 field_1 = 'field_1' + rnd
@@ -42,23 +43,39 @@ root = T.gid('root')
 
 html = `<div class="container-fluid div2">
 <div class="row">
-<form id="${form}" class="mx-auto col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3">
+<h3 class="mx-auto p-3 w-100 text-align-center">Сервис выдачи паспортов качества</h3>
+<form id="${form}" class="mx-auto p-4 col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3 form-inline22">
   <div class="form-group">
     <label for="${field_1}">Field-1</label>
-    <input type="text" class="form-control" id="${field_1}" aria-describedby="${aria_desc_1}" 
-    placeholder="${placeholder_1}" value="11111111111">
-    <small id="${aria_desc_1}" class="form-text text-muted">Describe this field</small>
+    <div class="row">
+        <input type="text" class="form-control col-9" id="${field_1}" aria-describedby="${aria_desc_1}"
+       placeholder="${placeholder_1}" value="1111111111">
+        <div class="col-3">
+            <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_1}"><i class="icon-cancel"></i></button>
+        </div>
+    </div>
   </div>
   <div class="form-group">
     <label for="${field_2}">Field-2</label>
-    <input type="text" class="form-control" id="${field_2}" aria-describedby="${aria_desc_2}"
-     placeholder="${placeholder_2}" value="3333333333">
+    <div class="row">
+        <input type="text" class="form-control col-9" id="${field_2}" aria-describedby="${aria_desc_2}"
+       placeholder="${placeholder_2}" value="3333333333">
+        <div class="col-3">
+            <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_2}"><i class="icon-cancel"></i></button>
+        </div>
+    </div>
     <small id="${aria_desc_2}" class="form-text text-muted">Describe this field</small>
   </div>
+<!--  <div class="form-group col-3">-->
+<!--     <button>+++</button>-->
+<!--  </div>-->
+<!--  </div>-->
   <button type="submit" class="btn btn-primary mx-auto d-block" data-a="submit" data-r="submit">
   <i id="${loader}" class="d-none icon-spin2 animate-spin"></i>
   <i class="icon-paper-plane"></i>
   Search & Download</button>
+<!--  <button></button>-->
+
 </form>
 </div></div>`
 // https://www.philowen.co/blog/force-a-file-to-download-when-link-is-clicked/
@@ -91,6 +108,12 @@ const query = {
 }
 
 const handlers = {
+
+  clear(a){
+    T.gid(a).value=''
+    console.log(a)
+  },
+
   async submit(arg) {
     // args.tst(555)
     // debugger
@@ -111,20 +134,32 @@ const handlers = {
 
     setTimeout(() => {
       new T.Fetch(query).run().then(response => {
-        console.log(response)
+        // console.log(response)
         elements.form.setDisable(false)
         sels.loader.classList.add('d-none')
         // debugger
+        fileName = `Passport-${sels.field_1.value}-${sels.field_2.value}.pdf`
         if (!sels.link) {
-          sels.form.insertAdjacentHTML('afterend',
-            `<div class="w-100 d-flex justify-content-center py-3"><a id="${link}" href="http://0.0.0.0:8080/src/tests/fixtures/test.pdf" 
-download="Passport-${sels.field_1.value}-${sels.field_2.value}.pdf">Passport-${sels.field_1.value}-${sels.field_2.value}.pdf</a></div>
-`)
+
+          $(sels.form).append(`<div id="${link}" style="display: none;" class="w-100 d-flex justify-content-center">
+<a class="mt-4" href="http://0.0.0.0:8080/src/tests/fixtures/test.pdf"
+download="${fileName}">${fileName}</a></div>
+`).find(`#${link}`).slideDown('fast')
           sels.link = T.gid(link)
+
+        } else {
+          // console.log(fileName)
+          $(`#${link}`).find('a').html(fileName)
         }
+      }).then(() => {
+        setTimeout(() => {
+          // console.log($(`#${link}`))
+          // $(`#${link}`).slideUp()
+          // $(sels.link).slideDown()
+        }, 1500)
       })
     }, 0)
-    // console.log(arg)
+    // console.log($(form))
 
   }
 }

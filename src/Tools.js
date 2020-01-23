@@ -23,8 +23,8 @@ function gid(a) {
   return document.getElementById(a);
 }
 
-function gs(a) {
-  return document.querySelector(a);
+function gs(sel=document, a) {
+  return sel.querySelector(a);
 }
 
 function gss(a) {

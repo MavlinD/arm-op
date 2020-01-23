@@ -60,13 +60,15 @@ let facade = (
           // if (e.target.tagName) {
           //   if (e.target.tagName === 'BUTTON') {
           // console.log(e.target)
+          ai = e.target.closest(['button, a']);
           // ai = e.target.closest(['.i']);
           // if (ai) {
           // console.log(ai)
-          if (e.target.dataset.r && checkFunction(this[e.target.dataset.r])) {
+          if (ai && ai.dataset.r && checkFunction(this[ai.dataset.r])) {
+          // if (ai.target.dataset.r && checkFunction(this[ai.target.dataset.r])) {
             // console.log(`${e.target.dataset.r}, ${e.target.dataset.a}`)
             // debugger
-              this[e.target.dataset.r](e.target.dataset.a)
+              this[ai.dataset.r](ai.dataset.a)
             // if () {
             // }
           }

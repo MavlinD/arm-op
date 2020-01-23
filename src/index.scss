@@ -2,15 +2,20 @@
 @import 'assets/fonts/fontello/css/fontello.css';
 @import 'assets/fonts/fontello/css/animation.css';
 
-#root{
-  >.container-fluid{
+#root {
+  > .container-fluid {
     //background: #007bff;
     //height: ;
   }
 
-  i{
+  i {
     font-family: fontello;
   }
+
+  .text-align-center {
+    text-align: center;
+  }
+
 }
 
 
