@@ -1,34 +1,9 @@
-// console.log("Tools-app14");
-// import fetch from 'node-fetch';
-
-export let Const = {};
-
-if (typeof window === "undefined") {
-  Const.location = "";
-} else {
-  // Const.location = 'http://glass-front.web.azot.kmr';
-  Const.location = 'http://0.0.0.0:8080';
-  // Const.location = window.location.origin;
-}
-// in this TZ DB is contain data
-Const.dbTimeZone = "+7";
-
-/**
- * возвращает ссылку на элемент
- *
- * @param {string} a
- * @return {Element}
- */
 function gid(a) {
   return document.getElementById(a);
 }
 
 function gs(sel=document, a) {
   return sel.querySelector(a);
-}
-
-function gss(a) {
-  return document.querySelectorAll(a);
 }
 
 function Fetch(arg) {
@@ -196,7 +171,6 @@ function getDate(arg) {
   if (day < 10) day = '0' + day
   return date.getFullYear() + '-' + month + '-' + day; // среда, 31 декабря 2014 г. н.э. 12:30:00
 }
-
 
 function log(a) {
   console.log(a);
@@ -662,4 +636,4 @@ export class Tpl {
 }
 
 
-export {gid, log, gs, gss, Fetch, Sort, Query, Form, loadJsCss};
+export {gid, log, gs, Fetch, Sort, Query, Form, loadJsCss};

@@ -2,7 +2,7 @@
   "name": "arm-op",
   "version": "1.0.0",
   "description": "сервис выдачи ПК",
-  "main": "main.js",
+  "main": "src/index.js",
   "scripts": {
     "webp": "NODE_ENV='development' webpack",
     "watch": "webpack --watch",
@@ -13,10 +13,9 @@
     "build-win": "set NODE_ENV=production&&webpack",
     "test": "node tests/test_all.mjs",
     "debug": "node debug",
-    "upload": "scp -r /home/mdv/Projects/glass/dist/*  mdv@azot.kmr@oais01.azot.kmr:/opt/www/glass-frontend/public_html",
-    "reboot": "scp -r /home/mdv/Projects/glass/src/js/oais/Events.json  mdv@azot.kmr@oais01.azot.kmr:/opt/www/glass-frontend/public_html"
+    "upload": "scp -r /home/mdv/Projects/arm-op/dist/*  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/public_html"
   },
-  "author": "OAIS",
+  "author": "OAIS Mavlin",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.7.5",

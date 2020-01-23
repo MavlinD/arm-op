@@ -116,7 +116,7 @@ const query = () => {
 <a class="my-4" href="http://0.0.0.0:8080/src/tests/fixtures/test.pdf"
 download="${fileName}">${fileName}</a></div>
 `)
-              $(`#${link}`).slideDown('fast')
+            $(`#${link}`).slideDown('fast')
             sels.link = T.gid(link)
           } else {
             $(`#${link}`).find('a').html(fileName).end().slideDown('fast')
@@ -126,10 +126,10 @@ download="${fileName}">${fileName}</a></div>
           $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
 class="alert alert-danger"><span>not found</span></div>`)//
           $(`#${link}`).slideUp('fast')
-          $(`#${err}`).slideDown('fast')//.delay(1500).slideUp()
+          $(`#${err}`).slideDown('fast')
 
         }
-      }, 500)
+      }, 1000)
     },
   }
 }
