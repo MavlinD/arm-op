@@ -33,22 +33,22 @@ def create_app():
     :return Flask object: Returns a Flask application instance
     """
 
-    app = Flask(__name__, template_folder='static/')
+    app = Flask(__name__)
     app.url_map.strict_slashes = False
     CORS(app)
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
 
-    @app.errorhandler(404)
-    def page_not_found(e):
-        """Return JSON instead of HTML for HTTP errors."""
-        # start with the correct headers and status code from the error
-        return jsonify(
-            code=int(e.code),
-            data=str(e.name),
-            message=str(e.description),
-            query=request.url,
-        ), 200
+    # @app.errorhandler(404)
+    # def page_not_found(e):
+    #     """Return JSON instead of HTML for HTTP errors."""
+    #     # start with the correct headers and status code from the error
+    #     return jsonify(
+    #         code=int(e.code),
+    #         data=str(e.name),
+    #         message=str(e.description),
+    #         query=request.url,
+    #     ), 200
 
     # db.init_app(app)
 

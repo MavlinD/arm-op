@@ -13,6 +13,8 @@ import * as Common from './Common';
 import * as T from './Tools';
 import {Form} from "./Tools";
 
+import 'src/tests/fixtures/test.pdf'
+
 
 // import pdfMake from "pdfmake/build/pdfmake";
 // import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -97,7 +99,8 @@ const Run = () => {
 
   const query = () => {
     return {
-      url: 'http://glass-backend.web.azot.kmr/api',
+      url: 'http://0.0.0.0:8900/api',
+      // url: 'http://glass-backend.web.azot.kmr/api',
       type: 'POST',
       data: {
         box: 'LNTR2',
@@ -117,7 +120,7 @@ const Run = () => {
             if (!sels.link) {
               console.log('it found')
               $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
-<a class="my-4" href="http://10.77.128.231:8080/src/tests/fixtures/test.pdf"
+<a class="my-4" href="http://0.0.0.0:8900/src/tests/fixtures/test.pdf"
 download="${fileName}">${fileName}</a></div>
 `)
               $(`#${link}`).slideDown('fast')
@@ -131,7 +134,6 @@ download="${fileName}">${fileName}</a></div>
 class="alert alert-danger"><span>not found</span></div>`)//
             $(`#${link}`).slideUp('fast')
             $(`#${err}`).slideDown('fast')
-
           }
         }, 1000)
       },

@@ -3,7 +3,7 @@
 import json
 from flask import Blueprint, render_template, abort, request, jsonify
 from queryes import controller
-from stringcolor import *
+# from stringcolor import *
 
 from webargs import fields, validate
 from webargs.flaskparser import use_args
@@ -11,7 +11,8 @@ from webargs.flaskparser import use_args
 website_blueprint = Blueprint('website_blueprint', __name__)
 
 
-@website_blueprint.route('/', methods=['GET'])
+@website_blueprint.route('/')
+# @website_blueprint.route('/', methods=['GET'])
 def index():
     # Controller logic should go here
     return render_template('index.html')
@@ -36,9 +37,9 @@ def handle_error(err):
 })
 def get_query_post(args):
     data = request.json
-    print(cs(request, 'blue'))
+    # print(cs(request, 'blue'))
     data['path'] = args['wagon_or_container'] + '=5-5-5=' + args['consignment']
-    print(cs(data, 'blue'))
+    # print(cs(data, 'blue'))
     return data
 
 

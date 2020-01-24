@@ -16,16 +16,10 @@ in a separate terminal window.
 
 import logging, json
 import unittest
-from typing import Dict, List
-
-from flask import jsonify
-from stringcolor import *
+# from stringcolor import * // have trable to install pkg-resources==0.0.0
 
 from flask_testing import TestCase
-
 from project import create_app, logger
-from queryes import queryT
-from secret.db_conf import db
 
 # Creates a new instance of the Flask application. The reason for this
 # is that we can't interrupt the application instance that is currently

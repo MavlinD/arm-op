@@ -43,7 +43,7 @@ services:
       image: glass-backend_nginx
       container_name: nginx_arm_pq
       ports:
-        - 8700:80
+        - 8900:80
 #      restart: always
       networks:
         - net
