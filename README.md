@@ -19,3 +19,9 @@ npm run dev
 npm run build
 ```
 
+##Backend
+
+#### Run tests
+
++ python3 flask/manage.py test_one test_website
++ python3 flask/manage.py cov
