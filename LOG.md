@@ -31,11 +31,12 @@ https://www.geeksforgeeks.org/packing-and-unpacking-arguments-in-python/
 
 ## docker commands:
 
-docker save -o /home/mdv/HDD500Gb/docker_images/glass_flask.tar glass-backend_flask
-docker save -o /home/mdv/HDD500Gb/docker_images/glass_backend_nginx.tar glass-backend_nginx
+docker build -t mdv/nginx-arm-pq .
+docker save -o /home/mdv/HDD500Gb/docker_images/flask_arm_pq.tar arm-op_flask
+docker save -o /home/mdv/HDD500Gb/docker_images/nginx_arm_pq.tar mdv/nginx-arm-pq 
 
-sudo docker load < /opt/docker_images/glass_backend_nginx.tar
-sudo docker load < /opt/docker_images/glass_backend_flask.tar 
+sudo docker load < /opt/docker_images/flask_arm_pq.tar 
+sudo docker load < /opt/docker_images/nginx_arm_pq.tar 
 sudo docker-compose up -d
 
 ## optional command:
@@ -45,8 +46,8 @@ docker container rm flask
 
 ## ssh commands:
 
-scp /home/mdv/HDD500Gb/docker_images/glass_backend_nginx.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/glass_backend_nginx.tar  
-scp /home/mdv/HDD500Gb/docker_images/glass_backend_flask.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/glass_backend_flask.tar
+scp /home/mdv/HDD500Gb/docker_images/flask_arm_pq.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/flask_arm_pq.tar  
+scp /home/mdv/HDD500Gb/docker_images/nginx_arm_pq.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/nginx_arm_pq.tar  
 
 ## setup permission cmd:
 
@@ -63,13 +64,15 @@ sudo chmod -R g+rwx /opt/docker_images/
 
 ## scp commands:
 
-scp -r /home/mdv/Projects/glass-backend/flask  mdv@azot.kmr@oais01.azot.kmr:/opt/www/glass-backend/
-scp -r /home/mdv/Projects/glass-backend/docker-compose.yml   mdv@azot.kmr@oais01.azot.kmr:/opt/www/glass-backend/docker-compose.yml 
+scp -r /home/mdv/Projects/arm-op/flask  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/
+scp -r /home/mdv/Projects/arm-op/docker-compose.yml   mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/docker-compose.yml 
 
 ## python commands:
 
 pip3 freeze>flask/requirements.txt
 
 curl -i -H "Content-Type: application/json" -X POST -d '{"wagon":"11111", "consignment": "fizz bizz"}' http://localhost:5000/api
+curl -i -H "Content-Type: application/json" -X POST -d '{"wagon":"11111", "consignment": "fizz bizz"}' http://oais01.azot.kmr:8900/api
+
 
 

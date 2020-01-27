@@ -19,6 +19,7 @@ def index():
 
 
 # Return validation errors as JSON
+# @website_blueprint.errorhandler(200)
 @website_blueprint.errorhandler(422)
 @website_blueprint.errorhandler(400)
 def handle_error(err):
@@ -38,7 +39,12 @@ def handle_error(err):
 def get_query_post(args):
     data = request.json
     # print(cs(request, 'blue'))
-    data['path'] = args['wagon_or_container'] + '=5-5-5=' + args['consignment']
+
+    data['data'] = {}
+    data['data']['code'] = 0
+    data['data']['message'] = 'Everything goes according to plan...'
+    data['data']['query'] = args
+    data['data']['path'] = args['wagon_or_container'] + '=5-5-5=' + args['consignment']
     # print(cs(data, 'blue'))
     return data
 

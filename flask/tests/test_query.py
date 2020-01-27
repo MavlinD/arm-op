@@ -99,7 +99,7 @@ class TestQueries(TestCase):
                 self.assertEqual(self.response.status_code, 200)
                 self.print_response()
 
-    def test_empty_post_Query(self):
+    def Otest_empty_post_Query(self):
         # print('\n')
         with self.client:
             pass

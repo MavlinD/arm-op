@@ -27,29 +27,29 @@ import 'src/tests/fixtures/test.pdf'
 // doc.save('a4.pdf')
 
 const Run = () => {
-  let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, root_class,
-    form, loader,
-    link, fileName, err
-  rnd = Math.round(Math.random() * 1000)
-  form = 'form' + rnd
-  field_1 = 'field_1' + rnd
-  field_2 = 'field_2' + rnd
-  aria_desc_1 = 'field_3' + rnd
-  aria_desc_2 = 'field_4' + rnd
-  placeholder_1 = 'Field-1'
-  placeholder_2 = 'Field-2'
-  loader = 'loader' + rnd
-  link = 'link' + rnd
-  err = 'err' + rnd
-  root_id = 'root' + rnd
+    let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, root_class,
+        form, loader,
+        link, fileName, err
+    rnd = Math.round(Math.random() * 1000)
+    form = 'form' + rnd
+    field_1 = 'field_1' + rnd
+    field_2 = 'field_2' + rnd
+    aria_desc_1 = 'field_3' + rnd
+    aria_desc_2 = 'field_4' + rnd
+    placeholder_1 = 'Field-1'
+    placeholder_2 = 'Field-2'
+    loader = 'loader' + rnd
+    link = 'link' + rnd
+    err = 'err' + rnd
+    root_id = 'root' + rnd
 
-  root = T.gid(root_id)
-  if (!root) {
-    document.body.insertAdjacentHTML('afterbegin', `<div id="${root_id}"></div>`)
     root = T.gid(root_id)
-  }
+    if (!root) {
+        document.body.insertAdjacentHTML('afterbegin', `<div id="${root_id}"></div>`)
+        root = T.gid(root_id)
+    }
 
-  html = `<div class="container-fluid div2">
+    html = `<div class="container-fluid div2">
 <div class="row mx-auto">
 <h3 class="mx-auto p-3 w-100 text-center">Сервис выдачи паспортов качества</h3>
 <form id="${form}" class="mx-auto px-4 py-2 col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4">
@@ -57,7 +57,7 @@ const Run = () => {
     <label for="${field_1}">Wagon</label>
     <div class="row mx-0">
         <input type="text" required class="form-control col" id="${field_1}" aria-describedby="${aria_desc_1}"
-       placeholder="${placeholder_1}" value="10">
+       placeholder="${placeholder_1}" value="ФБ123456789">
         <div class="col-auto">
             <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_1}"><i class="icon-cancel"></i></button>
         </div>
@@ -68,7 +68,7 @@ const Run = () => {
     <label for="${field_2}">Consignment</label>
     <div class="row mx-0">
         <input type="text" required class="form-control col" id="${field_2}" aria-describedby="${aria_desc_2}"
-       placeholder="${placeholder_2}" value="3333333333">
+       placeholder="${placeholder_2}" value="ПЯ123456">
         <div class="col-auto">
             <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_2}"><i class="icon-cancel"></i></button>
         </div>
@@ -83,97 +83,96 @@ const Run = () => {
 </form>
 </div></div>`
 // https://www.philowen.co/blog/force-a-file-to-download-when-link-is-clicked/
-  root.innerHTML = html
+    root.innerHTML = html
 
-  const sels = {
-    root,
-    form: T.gid(form),
-    loader: T.gid(loader),
-    field_1: T.gid(field_1),
-    field_2: T.gid(field_2),
-  }
+    const sels = {
+        root,
+        form: T.gid(form),
+        loader: T.gid(loader),
+        field_1: T.gid(field_1),
+        field_2: T.gid(field_2),
+    }
 
-  const elements = {
-    form: new Form(sels.form)
-  }
+    const elements = {
+        form: new Form(sels.form)
+    }
 
-  const query = () => {
-    return {
-      url: 'http://0.0.0.0:8900/api',
-      // url: 'http://glass-backend.web.azot.kmr/api',
-      type: 'POST',
-      data: {
-        box: 'LNTR2',
-        act: 'lntr',
-        wagon: sels.field_1.value,
-        consignment: sels.field_2.value,
-      },
-      success(a) {
-        console.log(a.query)
-        setTimeout(() => {
-          elements.form.setDisable(false)
-          sels.loader.classList.add('d-none')
-          // debugger
-          fileName = `Passport-${sels.field_1.value}-${sels.field_2.value}.pdf`
+    const query = () => {
+        return {
+            url: '/api',
+            type: 'POST',
+            data: {
+                wagon_or_container: sels.field_1.value,
+                consignment: sels.field_2.value,
+            },
+            success(a) {
+                console.log(a.query)
+                setTimeout(() => {
+                    elements.form.setDisable(false)
+                    sels.loader.classList.add('d-none')
+                    // debugger
+                    fileName = `Passport-${sels.field_1.value}-${sels.field_2.value}.pdf`
 
-          if (a.query.wagon !== '0') {
-            if (!sels.link) {
-              console.log('it found')
-              $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
-<a class="my-4" href="http://0.0.0.0:8900/src/tests/fixtures/test.pdf"
+                    if (a.query.wagon_or_container !== '0') {
+                        console.log(a.query)
+                        if (!sels.link) {
+                            console.log('it found')
+                            $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
+<a class="my-4" href="http://0.0.0.0:8900/static/fixtures/test.pdf"
+<!--<a class="my-4" href="http://0.0.0.0:8900/src/tests/fixtures/test.pdf"-->
 download="${fileName}">${fileName}</a></div>
 `)
-              $(`#${link}`).slideDown('fast')
-              sels.link = T.gid(link)
-            } else {
-              $(`#${link}`).find('a').html(fileName).end().slideDown('fast')
-            }
-          } else {
-            console.log('data not found (!')
-            $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
+                            $(`#${link}`).slideDown('fast')
+                            sels.link = T.gid(link)
+                        } else {
+                            $(`#${link}`).find('a').html(fileName).end().slideDown('fast')
+                        }
+                    } else {
+                        console.log('data not found (!')
+                        $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
 class="alert alert-danger"><span>not found</span></div>`)//
-            $(`#${link}`).slideUp('fast')
-            $(`#${err}`).slideDown('fast')
-          }
-        }, 1000)
-      },
+                        $(`#${link}`).slideUp('fast')
+                        $(`#${err}`).slideDown('fast')
+                    }
+                }, 1000)
+            },
+        }
     }
-  }
 
-  const handlers = {
+    const handlers = {
 
-    clear(a) {
-      T.gid(a).value = ''
-      // console.log(a)
-    },
+        clear(a) {
+            T.gid(a).value = ''
+            // console.log(a)
+        },
 
-    submit(arg) {
-      // args.tst(555)
-      // console.log(arg)
-      // debugger
-      if (sels.field_1.value && sels.field_2.value) {
-        elements.form.setDisable(true)
-        sels.loader.classList.remove('d-none')
-        $(`#${err}`).slideUp('fast')
+        submit(arg) {
+            // args.tst(555)
+            // console.log(arg)
+            // debugger
+            if (sels.field_1.value && sels.field_2.value) {
+                elements.form.setDisable(true)
+                sels.loader.classList.remove('d-none')
+                $(`#${err}`).slideUp('fast')
 
-        // let response = await fetch('http://0.0.0.0:8080/src/tests/fixtures/test.pdf');
-        // let blob = await response.blob(); // скачиваем как Blob-объект
-        // console.log(blob)
-        // const file = new Blob(
-        //   [blob],
-        //   {type: 'application/pdf'});
+                // let response = await fetch('http://0.0.0.0:8080/src/tests/fixtures/test.pdf');
+                // let blob = await response.blob(); // скачиваем как Blob-объект
+                // console.log(blob)
+                // const file = new Blob(
+                //   [blob],
+                //   {type: 'application/pdf'});
 
-        //Build a URL from the file
+                //Build a URL from the file
 // const fileURL = URL.createObjectURL(file);
 //Open the URL on new Window
 // window.open(fileURL);
 
-        new T.Query({...query()}).runQuery();
-      } else {
-        console.warn('empty field')
-      }
+                new T.Query({...query()}).runQuery();
+            } else {
+                console.warn('empty field')
+            }
+        }
     }
-  }
 
 // const args = {
 //   tst(arg) {
@@ -182,11 +181,11 @@ class="alert alert-danger"><span>not found</span></div>`)//
 //   }
 // }
 
-  sels.root.addEventListener("click", Common.facade.run.bind(handlers));
-  sels.root.addEventListener("submit", Common.facade.run.bind(handlers));
+    sels.root.addEventListener("click", Common.facade.run.bind(handlers));
+    sels.root.addEventListener("submit", Common.facade.run.bind(handlers));
 
 
-  console.log('root is mount')
+    console.log('arm-pq root is mount')
 
 }
 

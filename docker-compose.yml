@@ -14,9 +14,9 @@ services:
 #      volumes:
 #        - postgres:/var/lib/postgresql/data
 
-    flask:
+    flask_arm_pq:
       build: ./flask
-#      image: glass-backend_flask
+#      image: arm-op_flask
       container_name: flask_arm_pq
       volumes:
         - ./flask:/usr/src/app
@@ -35,22 +35,22 @@ services:
 #        - postgres
 #      links:
 #        - postgres
-#      restart: always
+      restart: always
       # command: gunicorn --worker-class eventlet -w 4 -b 0.0.0.0:8000 wsgi:app
 
-    nginx:
-#      build: ./nginx
-      image: glass-backend_nginx
+    nginx_arm_pq:
+      build: ./nginx
+#      image: mdv/nginx-arm-pq
       container_name: nginx_arm_pq
       ports:
         - 8900:80
-#      restart: always
+      restart: always
       networks:
         - net
       volumes:
         - ./flask/project/static:/usr/share/nginx/html/static
       depends_on:
-        - flask
+        - flask_arm_pq
 
 #volumes:
 #  postgres:

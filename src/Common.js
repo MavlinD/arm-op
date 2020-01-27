@@ -40,7 +40,7 @@ const facade = (() => {
         ai = e.target.closest(['button, a']);
         if (ai) {
           if (ai.hasAttribute('disabled')) return;
-          console.log(ai)
+          // console.log(ai)
           if (ai.dataset.r && checkFunction(this[ai.dataset.r])) {
             this[ai.dataset.r](ai.dataset.a)
           }
