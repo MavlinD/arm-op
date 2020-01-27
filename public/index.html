@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
     <meta
-      name="description"
-      content=""
+            name="description"
+            content=""
     />
     <title>ARM-ОП</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
 <!--    <div>Hi from flask arm-pq!</div>-->
-  <ul>
-    <li>Если в первом поле ноль, то ответ пустой</li>
-    <li>todo: валидация полей формы</li>
-  </ul>
-  </body>
+<div id="pq_err" style="display: none;" class="text-center alert alert-warning" role="alert">Place for error</div>
+<h4 class="my-3 text-center">Готовность на данный момент:</h4>
+<ul>
+    <li>Бэк готов на 95%, процессы изолированы, тестовая папка примонтирована, поиск проводиться по ней, содержит один
+        файл, реквизиты которого стоят в значениях полей формы. Меняем значения полей - видим пустой рез-т поиска или
+        служебное сообщение о невалидности данных.
+    </li>
+    <li>Валидация данных работает, только на сервере.</li>
+    <li>Следующий этап - валидация на клиенте + стилизация.</li>
+    <li>На запросе стоит задержка в 1 сек, для наглядности. В рабочей среде уберу.</li>
+    <li><a href="http://oais01.azot.kmr:8300/mdv/arm-op">Репозиторий проекта</a></li>
+</ul>
+</body>
 </html>

@@ -27,9 +27,9 @@ import 'src/tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf'
 // doc.save('a4.pdf')
 
 const Run = () => {
-    let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, root_class,
+    let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, err_place,
         form, loader,
-        link, fileName, err
+        link, namePassport, err
     rnd = Math.round(Math.random() * 1000)
     form = 'form' + rnd
     field_1 = 'field_1' + rnd
@@ -107,39 +107,52 @@ const Run = () => {
                 consignment: sels.field_2.value,
             },
             success(a) {
-                console.log(a.data)
+                // console.log(a.data)
                 setTimeout(() => {
                     elements.form.setDisable(false)
                     sels.loader.classList.add('d-none')
                     // debugger
-                    fileName = `Паспорт-${sels.field_1.value}-${sels.field_2.value}.pdf`
+                    namePassport = `Паспорт-${sels.field_1.value}-${sels.field_2.value}.pdf`
 
                     if (a.data['is_file_exists']) {
                         // if (a.query.wagon_or_container !== '0') {
-                        console.log(a.query)
+                        // console.log(a.query)
                         if (!sels.link) {
                             // console.log('it found')
                             $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
 <a class="my-4" href="http://arm-pq.web.azot.kmr/${a.data['path_to_file']}"
-download="${a.data['path_to_file']}">${fileName}</a></div>`)
+download="${a.data['path_to_file']}">${namePassport}</a></div>`)
                             $(`#${link}`).slideDown('fast')
                             sels.link = T.gid(link)
                         } else {
-                            $(`#${link}`).find('a').html(fileName).end().slideDown('fast')
+                            $(`#${link}`).find('a').html(namePassport).end().slideDown('fast')
                         }
                     } else {
                         console.log('data not found (!')
                         $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
-class="alert alert-danger"><span>Запрашиваемый Паспорт качества не найден по одной из нижеследующих причин:</br>
+class="alert alert-danger"><span>Запрашиваемый ${namePassport} не найден по одной из нижеследующих причин:</br>
 <ul>
 <li>Некорректно введены данные в полях "№ накладной" и/или "№ вагона".
 Проверьте правильность данных и повторите запрос.</li>
-<li>На текущий момент Паспорт качества не сформирован.</li>
+<li>На текущий момент ${namePassport} не сформирован.</li>
 </ul>
 </span></div>`)//
                         $(`#${link}`).slideUp('fast')
                         $(`#${err}`).slideDown('fast')
                     }
+                }, 1000)
+            },
+            error(a) {
+                // debugger
+                setTimeout(() => {
+                    console.log(a)
+                    let errs = ''
+                    for (let [key, val] of Object.entries(a)) {
+                        errs += `${key}: ${val}`
+                    }
+                    $(`#pq_err`).html(errs).slideDown('fast').delay(1500).slideUp('fast')
+                    elements.form.setDisable(false)
+                    sels.loader.classList.add('d-none')
                 }, 1000)
             },
         }
