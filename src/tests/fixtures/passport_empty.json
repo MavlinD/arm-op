@@ -1,0 +1,11 @@
+{
+  "code": 0,
+  "data": {
+    "path": "null"
+  },
+  "message": "Everything goes according to plan...",
+  "query": {
+    "field-1": "xxxxxxxxxxx",
+    "field-2": "yyyyyyyyyyy"
+  }
+}

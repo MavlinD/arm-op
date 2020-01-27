@@ -15,7 +15,9 @@ console.log(`config loaded successful, process.env = ${process.env.NODE_ENV}`.bl
 
 const PATHS = {
     src: path.join(__dirname, "./src"),
-    dist: path.join(__dirname, "./dist"),
+    dist: path.join(__dirname, "./flask/project/static"),
+    flask_templates: path.join(__dirname, "./flask/project/templates"),
+    // dist: path.join(__dirname, "./dist"),
     // assets: "js/"
 };
 
@@ -35,17 +37,20 @@ function resolve(dir) {
 let plugins = [
     new HtmlWebpackPlugin({
         template: `./public/index.html`,
-        filename: `index.html`,
+        filename: process.env.NODE_ENV === "production" ? `${PATHS.flask_templates}/index.html` : `index.html`,
+        // filename: `index.html`,
         favicon: './public/favicon.ico',
         inject: true,
     }),
 
     // new BundleAnalyzerPlugin(),
-    new CleanWebpackPlugin(["dist"], {
+    new CleanWebpackPlugin([PATHS.dist], {
+        // new CleanWebpackPlugin(["dist"], {
         verbose: true,
-        beforeEmit: true
+        beforeEmit: true,
         // dry: true
-        // dry: process.env.NODE_ENV === "production" ? false : true
+        // Simulate the removal of files
+        dry: process.env.NODE_ENV === "production"
     }),
     new MiniCssExtractPlugin({
         filename: "css/[name].css"
@@ -144,51 +149,80 @@ module.exports = {
     },
     devtool: process.env.NODE_ENV === "production" ? "none" : "inline-source-map",
     devServer: {
-        historyApiFallback: true,
+        // historyApiFallback: true,
+        // contentBase: PATHS.dist,
+        // host: 'localhost',
+        // host: '0.0.0.0',
+        // port: 8080,
         // hot:true,
         // writeToDisk: filePath => {
         //   return /\.(css|pug|html)$/.test(filePath);
         // },
-
-        // proxy: {
-        //     "/": {
-        //         // host: "0.0.0.0",
-        //         contentBase: "./dist",
-        //         secure: false,
-        //         autoRewrite: true,
-        //         headers: {
-        //             "X-ProxiedBy-Webpack": true
-        //         },
-        //
-        //         target: "http://pisrv04.azot.kmr:8093",
-        //         // target: 'http://pisrv04.azot.kmr:8093/Scheme/ViewSvgScheme/',
-        //         // target: 'http://eportal4.azot.kmr',
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             // '': 'main',
-        //             // '/Content/profile.css': '/src/assets/oais/dev.css',
-        //             // '^/catalog': '',
-        //         },
-        //         bypass(req) {
-        //             // console.log(req.url)
-        //             if (req.url === "/Scripts/AppScripts/StepValidator.js") {
-        //                 // !!!
-        //                 return "/oaisMain.js"; // точка входа в локальный скрипт
-        //             } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
-        //                 // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
-        //                 // console.log('include req.url')
-        //                 // дальнейшаяя загрузка локальных скриптов
-        //                 return req.url;
-        //             }
-        //         }
+        //     '/*': {
+        //         target: "http://0808.ddns.net/",
+        //         ws: false,
+        //         changeOrigin: true
         //     }
-        // }
+        proxy: {
+            // https://webpack.js.org/configuration/dev-server/#devserverproxy
+            '/api': {
+                // target: "http://0.0.0.0:8900/api",
+                target: "http://arm-pq.web.azot.kmr/api",
+                pathRewrite: {'^/api': ''},
+                ws: false,
+                changeOrigin: true
+            }
+            // },
+
+            // "/api": {
+            // "http://arm-pq.web.azot.kmr/api/*": {
+            // "arm-pq.web.azot.kmr/api": {
+            //     target: "http://0.0.0.0:8900/api",
+            // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
+            // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
+            // host: "http://arm-pq.web.azot.kmr/api",
+            // contentBase: "./dist",
+            // secure: false,
+            // autoRewrite: true,
+            // headers: {
+            //     "X-ProxiedBy-Webpack": true
+            // },
+            //
+            //         target: "http://pisrv04.azot.kmr:8093",
+            //         // target: 'http://pisrv04.azot.kmr:8093/Scheme/ViewSvgScheme/',
+            //         // target: 'http://eportal4.azot.kmr',
+            // changeOrigin: true,
+            // ws: false,
+            // }
+            //         pathRewrite: {
+            //             // '': 'main',
+            //             // '/Content/profile.css': '/src/assets/oais/dev.css',
+            //             // '^/catalog': '',
+            //         },
+            //         bypass(req) {
+            //             // console.log(req.url)
+            //             if (req.url === "/Scripts/AppScripts/StepValidator.js") {
+            //                 // !!!
+            //                 return "/oaisMain.js"; // точка входа в локальный скрипт
+            //             } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
+            //                 // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
+            //                 // console.log('include req.url')
+            //                 // дальнейшаяя загрузка локальных скриптов
+            //                 return req.url;
+            //             }
+            //         }
+            //     }
+        }
     },
-    output: {
-        path: resolve("dist"),
-        publicPath: "/",
-        filename: "[name].js",
-    },
+    output:
+        {
+            path: PATHS.dist,
+            publicPath:
+                process.env.NODE_ENV === "production" ? "/static/" : "/",
+            filename:
+                "[name].js",
+        }
+    ,
     module: {
         rules: [
             {
@@ -207,14 +241,32 @@ module.exports = {
             },
             {
                 test: /\.(eot|woff2?|svg|ttf)$/,
-                // loader: 'url-loader',
-                loader: 'file-loader',
-                options: {
-                    limit: 10000,
-                    name: ('fonts/[name].[ext]')
-                }
+                use: [
+                    // 'url-loader',
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            limit: 10000,
+                            name: ('css/fonts/[name].[ext]')
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(pdf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            limit: 10000,
+                            name: ('fixtures/[name].[ext]')
+                        }
+                    }
+                ]
             },
         ]
-    },
+    }
+    ,
     plugins: plugins
-};
+}
+;

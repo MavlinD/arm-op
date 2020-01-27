@@ -1,6 +1,6 @@
 # Сервис выдачи паспортов качества потребителям
 
-## Build Setup:
+### Build Setup:
 
 ``` bash
 # Download repository:
@@ -19,3 +19,9 @@ npm run dev
 npm run build
 ```
 
+##Backend
+
+#### Run tests
+
++ python3 flask/manage.py test_one test_website
++ python3 flask/manage.py cov

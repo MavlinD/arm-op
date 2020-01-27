@@ -14,8 +14,8 @@
 }
 
 .div1, .div2, .div3 {
-  display: none;
-  width: 100%;
+  //display: none;
+  //width: 100%;
 }
 
 .div1 {
@@ -23,7 +23,7 @@
 }
 
 .div2 {
-  background: darkcyan;
+  background: darkgray;
 }
 
 .div3 {
@@ -58,7 +58,13 @@
 }
 
 
+form, div{
+  outline: $outline-blue;
+}
 
+button, h3{
+  outline: $outline-crimson;
+}
 
 
 

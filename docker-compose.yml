@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+#    postgres:
+#      build: ./postgres
+#      container_name: postgres
+#      ports:
+#        - 2345:5432
+#      networks:
+#        - net
+#      environment:
+#        - POSTGRES_USER=postgres
+#        - POSTGRES_PASSWORD=postgres
+#      volumes:
+#        - postgres:/var/lib/postgresql/data
+
+    flask_arm_pq:
+      build: ./flask
+#      image: arm-op_flask
+      container_name: flask_arm_pq
+      volumes:
+        - ./flask:/usr/src/app
+      networks:
+        - net
+      env_file: ./flask/secret/.env
+      environment:
+        - APP_SETTINGS=config.ProductionConfig
+#        - APP_SETTINGS=config.DevelopmentConfig
+#        - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/db_dev
+#        - DATABASE_TEST_URL=postgresql://postgres:postgres@postgres:5432/db_test
+        - SECRET_KEY=${SECRET_KEY}
+#      http://docs.gunicorn.org/en/stable/settings.html#reload
+      command: gunicorn --worker-class eventlet -w 4 --reload -b 0.0.0.0:8000 manage:app
+#      depends_on:
+#        - postgres
+#      links:
+#        - postgres
+      restart: always
+      # command: gunicorn --worker-class eventlet -w 4 -b 0.0.0.0:8000 wsgi:app
+
+    nginx_arm_pq:
+      build: ./nginx
+#      image: mdv/nginx-arm-pq
+      container_name: nginx_arm_pq
+      ports:
+        - 8900:80
+      restart: always
+      networks:
+        - net
+      volumes:
+        - ./flask/project/static:/usr/share/nginx/html/static
+      depends_on:
+        - flask_arm_pq
+
+#volumes:
+#  postgres:
+
+networks:
+  net:
