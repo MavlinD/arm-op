@@ -5,6 +5,7 @@ certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
 clint==0.5.1
+colorama==0.4.3
 Columnar==1.3.1
 coverage==4.4.1
 curtsies==0.3.0

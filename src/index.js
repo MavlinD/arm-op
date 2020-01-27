@@ -13,7 +13,7 @@ import * as Common from './Common';
 import * as T from './Tools';
 import {Form} from "./Tools";
 
-import 'src/tests/fixtures/test.pdf'
+import 'src/tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf'
 
 
 // import pdfMake from "pdfmake/build/pdfmake";
@@ -36,8 +36,8 @@ const Run = () => {
     field_2 = 'field_2' + rnd
     aria_desc_1 = 'field_3' + rnd
     aria_desc_2 = 'field_4' + rnd
-    placeholder_1 = 'Field-1'
-    placeholder_2 = 'Field-2'
+    placeholder_1 = '№ накладной'
+    placeholder_2 = '№ вагона или контейнера'
     loader = 'loader' + rnd
     link = 'link' + rnd
     err = 'err' + rnd
@@ -51,10 +51,11 @@ const Run = () => {
 
     html = `<div class="container-fluid div2">
 <div class="row mx-auto">
-<h3 class="mx-auto p-3 w-100 text-center">Сервис выдачи паспортов качества</h3>
+<h3 class="mx-auto p-3 w-100 text-center">Паспорт качества</h3>
+<h3 class="mx-auto p-3 w-100 text-center">Для получения Паспорт качества на продукцию</h3>
 <form id="${form}" class="mx-auto px-4 py-2 col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4">
   <div class="form-group">
-    <label for="${field_1}">Wagon</label>
+    <label for="${field_1}">№ накладной</label>
     <div class="row mx-0">
         <input type="text" required class="form-control col" id="${field_1}" aria-describedby="${aria_desc_1}"
        placeholder="${placeholder_1}" value="ФБ123456789">
@@ -62,10 +63,10 @@ const Run = () => {
             <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_1}"><i class="icon-cancel"></i></button>
         </div>
     </div>
-    <small id="${aria_desc_1}" class="form-text text-muted">Describe this field</small>
+<!--    <small id="${aria_desc_1}" class="form-text text-muted">Describe this field</small>-->
   </div>
   <div class="form-group">
-    <label for="${field_2}">Consignment</label>
+    <label for="${field_2}">№ вагона или контейнера</label>
     <div class="row mx-0">
         <input type="text" required class="form-control col" id="${field_2}" aria-describedby="${aria_desc_2}"
        placeholder="${placeholder_2}" value="ПЯ123456">
@@ -73,12 +74,12 @@ const Run = () => {
             <button class="btn btn-secondary" type="button" data-r="clear" data-a="${field_2}"><i class="icon-cancel"></i></button>
         </div>
     </div>
-    <small id="${aria_desc_2}" class="form-text text-muted">Describe this field</small>
+<!--    <small id="${aria_desc_2}" class="form-text text-muted">Describe this field</small>-->
   </div>
   <button type="submit" class="btn btn-primary px-5 mx-auto d-block my-4" data-a="submit" data-r="submit">
   <i id="${loader}" class="d-none icon-spin2 animate-spin"></i>
   <i class="icon-paper-plane"></i>
-  Search</button>
+  Получить паспорт</button>
 
 </form>
 </div></div>`
@@ -106,22 +107,21 @@ const Run = () => {
                 consignment: sels.field_2.value,
             },
             success(a) {
-                console.log(a.query)
+                console.log(a.data)
                 setTimeout(() => {
                     elements.form.setDisable(false)
                     sels.loader.classList.add('d-none')
                     // debugger
-                    fileName = `Passport-${sels.field_1.value}-${sels.field_2.value}.pdf`
+                    fileName = `Паспорт-${sels.field_1.value}-${sels.field_2.value}.pdf`
 
-                    if (a.query.wagon_or_container !== '0') {
+                    if (a.data['is_file_exists']) {
+                        // if (a.query.wagon_or_container !== '0') {
                         console.log(a.query)
                         if (!sels.link) {
-                            console.log('it found')
+                            // console.log('it found')
                             $(sels.form).append(`<div id="${link}" style="display: none;" class="alert alert-info" role="alert">
-<a class="my-4" href="http://0.0.0.0:8900/static/fixtures/test.pdf"
-<!--<a class="my-4" href="http://0.0.0.0:8900/src/tests/fixtures/test.pdf"-->
-download="${fileName}">${fileName}</a></div>
-`)
+<a class="my-4" href="http://arm-pq.web.azot.kmr/${a.data['path_to_file']}"
+download="${a.data['path_to_file']}">${fileName}</a></div>`)
                             $(`#${link}`).slideDown('fast')
                             sels.link = T.gid(link)
                         } else {
@@ -130,7 +130,13 @@ download="${fileName}">${fileName}</a></div>
                     } else {
                         console.log('data not found (!')
                         $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
-class="alert alert-danger"><span>not found</span></div>`)//
+class="alert alert-danger"><span>Запрашиваемый Паспорт качества не найден по одной из нижеследующих причин:</br>
+<ul>
+<li>Некорректно введены данные в полях "№ накладной" и/или "№ вагона".
+Проверьте правильность данных и повторите запрос.</li>
+<li>На текущий момент Паспорт качества не сформирован.</li>
+</ul>
+</span></div>`)//
                         $(`#${link}`).slideUp('fast')
                         $(`#${err}`).slideDown('fast')
                     }

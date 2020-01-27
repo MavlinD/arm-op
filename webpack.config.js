@@ -166,8 +166,8 @@ module.exports = {
         proxy: {
             // https://webpack.js.org/configuration/dev-server/#devserverproxy
             '/api': {
-                target: "http://0.0.0.0:8900/api",
-                // target: "http://arm-pq.web.azot.kmr/api",
+                // target: "http://0.0.0.0:8900/api",
+                target: "http://arm-pq.web.azot.kmr/api",
                 pathRewrite: {'^/api': ''},
                 ws: false,
                 changeOrigin: true

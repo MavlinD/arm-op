@@ -32,12 +32,15 @@ https://www.geeksforgeeks.org/packing-and-unpacking-arguments-in-python/
 ## docker commands:
 
 docker build -t mdv/nginx-arm-pq .
-docker save -o /home/mdv/HDD500Gb/docker_images/flask_arm_pq.tar arm-op_flask
+docker save -o /home/mdv/HDD500Gb/docker_images/flask_arm_pq-2.tar arm-op_flask_arm_pq
 docker save -o /home/mdv/HDD500Gb/docker_images/nginx_arm_pq.tar mdv/nginx-arm-pq 
 
-sudo docker load < /opt/docker_images/flask_arm_pq.tar 
+sudo docker load < /opt/docker_images/flask_arm_pq-2.tar 
 sudo docker load < /opt/docker_images/nginx_arm_pq.tar 
 sudo docker-compose up -d
+// интерактивный сеанс
+docker exec -it flask_arm_pq bash 
+
 
 ## optional command:
 
@@ -46,7 +49,7 @@ docker container rm flask
 
 ## ssh commands:
 
-scp /home/mdv/HDD500Gb/docker_images/flask_arm_pq.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/flask_arm_pq.tar  
+scp /home/mdv/HDD500Gb/docker_images/flask_arm_pq.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/flask_arm_pq-2.tar  
 scp /home/mdv/HDD500Gb/docker_images/nginx_arm_pq.tar mdv@azot.kmr@oais01.azot.kmr:/opt/docker_images/nginx_arm_pq.tar  
 
 ## setup permission cmd:
@@ -66,6 +69,8 @@ sudo chmod -R g+rwx /opt/docker_images/
 
 scp -r /home/mdv/Projects/arm-op/flask  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/
 scp -r /home/mdv/Projects/arm-op/docker-compose.yml   mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/docker-compose.yml 
+scp /home/mdv/Projects/arm-op/src/tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf   mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/flask/project/static/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf 
+
 
 ## python commands:
 
