@@ -135,7 +135,7 @@ module.exports = {
         modules: [resolve(__dirname, './src'), 'node_modules'],
         alias: { // usade in import
             src: path.resolve(__dirname, './src'),
-            components: path.resolve(__dirname, './src/components'),
+            // components: path.resolve(__dirname, './src/components'),
             fixtures: path.resolve(__dirname, './src/fixtures'),
             assets: path.resolve(__dirname, './src/assets'),
             // fonts: path.resolve(__dirname, './src/assets/fonts'),
@@ -144,7 +144,7 @@ module.exports = {
     },
     mode: process.env.NODE_ENV,
     entry: {
-        index: "./src/index.js",
+        index: "./src/oais/index.js",
         // main: "./src/main.js",
     },
     devtool: process.env.NODE_ENV === "production" ? "none" : "inline-source-map",
@@ -170,8 +170,23 @@ module.exports = {
                 target: "http://arm-pq.web.azot.kmr/api",
                 pathRewrite: {'^/api': ''},
                 ws: false,
-                changeOrigin: true
-            }
+                changeOrigin: true,
+            },
+            // '/':{
+            //     target: 'http://www.sds-azot.ru/ru/pasporta-kachestva',
+            //     bypass(req) {
+            //         // console.log(req.url)
+            //         if (req.url === "/Scripts/AppScripts/StepValidator.js") {
+            //             // !!!
+            //             return "/oaisMain.js"; // точка входа в локальный скрипт
+            //         } else if (req.url.includes("oais") || req.url.includes("init.js")) {
+            //             // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
+            //             // console.log('include req.url')
+            //             // дальнейшаяя загрузка локальных скриптов
+            //             return req.url;
+            //         }
+            //     }
+            // }
             // },
 
             // "/api": {

@@ -13,7 +13,7 @@ import * as Common from './Common';
 import * as T from './Tools';
 import {Form} from "./Tools";
 
-import 'src/tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf'
+import './tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf'
 
 
 // import pdfMake from "pdfmake/build/pdfmake";

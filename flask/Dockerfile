@@ -34,7 +34,7 @@ RUN apt-get update \
     && apt-get install -y \
        msodbcsql17
 
-# optional: for bcp and sqlcmd
+#optional: for bcp and sqlcmd
 #sudo ACCEPT_EULA=Y apt-get install mssql-tools
 #echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 #echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
