@@ -68,6 +68,7 @@ sudo chmod -R g+rwx /opt/docker_images/
 ## scp commands:
 
 scp -r /home/mdv/Projects/arm-op/flask  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/
+scp -r /home/mdv/Projects/arm-op/flask/project/static  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/flask/project/static
 scp -r /home/mdv/Projects/arm-op/docker-compose.yml   mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/docker-compose.yml 
 scp /home/mdv/Projects/arm-op/src/tests/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf   mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/flask/project/static/fixtures/Паспорт-ФБ123456789-ПЯ123456.pdf 
 

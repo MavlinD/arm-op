@@ -1,6 +1,6 @@
 // use only for index page
-@import 'assets/fonts/fontello/css/fontello.css';
-@import 'assets/fonts/fontello/css/animation.css';
+@import '../assets/fonts/fontello/css/fontello.css';
+@import '../assets/fonts/fontello/css/animation.css';
 
 #root {
   > .container-fluid {
@@ -16,10 +16,16 @@
     text-align: center;
   }
 
-  h3{
+  h3 {
     font-family: Raleway;
   }
 
+}
+
+.passpq {
+  input.invalid {
+    border-color: red;
+  }
 }
 
 
