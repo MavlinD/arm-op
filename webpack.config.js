@@ -40,6 +40,7 @@ let plugins = [
         filename: process.env.NODE_ENV === "production" ? `${PATHS.flask_templates}/index.html` : `index.html`,
         // filename: `index.html`,
         favicon: './public/favicon.ico',
+        // inject: false,
         inject: true,
     }),
 
@@ -144,12 +145,13 @@ module.exports = {
     },
     mode: process.env.NODE_ENV,
     entry: {
-        index: "./src/oais/index.js",
+        init: "./init.js",
+        // index: "./src/oais/index.js",
         // main: "./src/main.js",
     },
     devtool: process.env.NODE_ENV === "production" ? "none" : "inline-source-map",
     devServer: {
-        // historyApiFallback: true,
+        historyApiFallback: true,
         // contentBase: PATHS.dist,
         // host: 'localhost',
         // host: '0.0.0.0',
@@ -164,70 +166,102 @@ module.exports = {
         //         changeOrigin: true
         //     }
         proxy: {
+            // https://sdk.gooddata.com/gooddata-ui/docs/4.1.1/ht_configure_webpack_proxy.html
             // https://webpack.js.org/configuration/dev-server/#devserverproxy
+            // target: "http://0.0.0.0:8900/api",
             '/api': {
-                // target: "http://0.0.0.0:8900/api",
                 target: "http://arm-pq.web.azot.kmr/api",
                 pathRewrite: {'^/api': ''},
                 ws: false,
                 changeOrigin: true,
             },
-            // '/':{
-            //     target: 'http://www.sds-azot.ru/ru/pasporta-kachestva',
+
+            // '/': {
+            //     target: "http://arm-pq.web.azot.kmr/api",
+            // },
+                // proxy: "http://proxy.azot.kmr:3128",
+
+                // target: "http://0.0.0.0:3001",
+                // pathRewrite: {'^/api': ''},
+                // ws: false,
+                // changeOrigin: true,
+
+            // '/': {
+            //     //
+            //     //     contentBase: "./flask/project/static",
+            //     //     secure: false,
+            //     //     autoRewrite: true,
+            //     //     headers: {
+            //     //         "X-ProxiedBy-Webpack": true
+            //     //     },
+            //     //
+            //     //     // target: 'http://www.sds-azot.ru',
+            //     //     // target: "http://pisrv04.azot.kmr:8093",
+            //     target: 'http://www.google.com',
+            //     //     // target: 'http://www.sds-azot.ru/ru/pasporta-kachestva',
+            //     changeOrigin: true,
+            //     ws: false,
+            // }
+            //     pathRewrite: {
+            //         // '': 'main',
+            //         // '/Content/profile.css': '/src/assets/oais/dev.css',
+            //         // '^/catalog': '',
+            //     },
+            //
             //     bypass(req) {
             //         // console.log(req.url)
-            //         if (req.url === "/Scripts/AppScripts/StepValidator.js") {
+            //         if (req.url === "http://www.google-analytics.com/ga.js") {
             //             // !!!
             //             return "/oaisMain.js"; // точка входа в локальный скрипт
             //         } else if (req.url.includes("oais") || req.url.includes("init.js")) {
             //             // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
-            //             // console.log('include req.url')
+            //             console.log('include req.url')
             //             // дальнейшаяя загрузка локальных скриптов
             //             return req.url;
             //         }
             //     }
             // }
-            // },
+        },
 
-            // "/api": {
-            // "http://arm-pq.web.azot.kmr/api/*": {
-            // "arm-pq.web.azot.kmr/api": {
-            //     target: "http://0.0.0.0:8900/api",
-            // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
-            // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
-            // host: "http://arm-pq.web.azot.kmr/api",
-            // contentBase: "./dist",
-            // secure: false,
-            // autoRewrite: true,
-            // headers: {
-            //     "X-ProxiedBy-Webpack": true
-            // },
-            //
-            //         target: "http://pisrv04.azot.kmr:8093",
-            //         // target: 'http://pisrv04.azot.kmr:8093/Scheme/ViewSvgScheme/',
-            //         // target: 'http://eportal4.azot.kmr',
-            // changeOrigin: true,
-            // ws: false,
-            // }
-            //         pathRewrite: {
-            //             // '': 'main',
-            //             // '/Content/profile.css': '/src/assets/oais/dev.css',
-            //             // '^/catalog': '',
-            //         },
-            //         bypass(req) {
-            //             // console.log(req.url)
-            //             if (req.url === "/Scripts/AppScripts/StepValidator.js") {
-            //                 // !!!
-            //                 return "/oaisMain.js"; // точка входа в локальный скрипт
-            //             } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
-            //                 // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
-            //                 // console.log('include req.url')
-            //                 // дальнейшаяя загрузка локальных скриптов
-            //                 return req.url;
-            //             }
-            //         }
-            //     }
-        }
+        // "/api": {
+        // "http://arm-pq.web.azot.kmr/api/*": {
+        // "arm-pq.web.azot.kmr/api": {
+        //     target: "http://0.0.0.0:8900/api",
+        // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
+        // host: process.env.NODE_ENV === "production" ? "http://0.0.0.0:8900/api" : "http://arm-pq.web.azot.kmr/api",
+        // host: "http://arm-pq.web.azot.kmr/api",
+        // contentBase: "./dist",
+        // secure: false,
+        // autoRewrite: true,
+        // headers: {
+        //     "X-ProxiedBy-Webpack": true
+        // },
+        //
+        //         target: "http://pisrv04.azot.kmr:8093",
+        //         // target: 'http://pisrv04.azot.kmr:8093/Scheme/ViewSvgScheme/',
+        //         // target: 'http://eportal4.azot.kmr',
+        // changeOrigin: true,
+        // ws: false,
+        // }
+        //         pathRewrite: {
+        //             // '': 'main',
+        //             // '/Content/profile.css': '/src/assets/oais/dev.css',
+        //             // '^/catalog': '',
+        //         },
+        //         bypass(req) {
+        //             // console.log(req.url)
+        //             if (req.url === "/Scripts/AppScripts/StepValidator.js") {
+        //                 // !!!
+        //                 return "/oaisMain.js"; // точка входа в локальный скрипт
+        //             } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
+        //                 // } else if (req.url.includes("oais") || req.url.includes("init.js") || req.url.includes("node_modules")) {
+        //                 // console.log('include req.url')
+        //                 // дальнейшаяя загрузка локальных скриптов
+        //                 return req.url;
+        //             }
+        //         }
+        //     }
+        // }
     },
     output:
         {

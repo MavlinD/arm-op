@@ -6,6 +6,7 @@
   "scripts": {
     "webp": "NODE_ENV='development' webpack",
     "watch": "NODE_ENV='production' webpack --watch",
+    "dev-no-kill": "NODE_ENV='development' webpack-dev-server --host 0.0.0.0",
     "dev": "sudo killall -9 node && NODE_ENV='development' webpack-dev-server --host 0.0.0.0",
     "hmr": "sudo killall -9 node && webpack-dev-server ./main.js  --hot --inline --module-bind 'css=style!css'",
     "build": "NODE_ENV='production' webpack --mode=production",
@@ -13,8 +14,10 @@
     "build-win": "set NODE_ENV=production&&webpack",
     "test": "node tests/test_all.mjs",
     "debug": "node debug",
-    "upload": "scp -r /home/mdv/Projects/arm-op/dist/*  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/public_html"
+    "upload-full": "scp -r /home/mdv/Projects/arm-op/flask  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/",
+    "upload-client": "scp -r /home/mdv/Projects/arm-op/flask/project/static/*  mdv@azot.kmr@oais01.azot.kmr:/opt/www/arm-pq/flask/project/static"
   },
+  "proxy": "http://0.0.0.0:3001",
   "author": "OAIS Mavlin",
   "license": "MIT",
   "devDependencies": {
@@ -51,12 +54,13 @@
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.1.4",
     "webpack-run-after-build-plugin": "0.0.1",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-shell-plugin": "^0.5.0",
+    "express": "latest",
+    "request": "latest"
   },
   "dependencies": {
     "bootstrap": "4.1.3",
-    "jquery": "^3.4.1",
-    "jspdf": "^1.5.3",
-    "pdfmake": "^0.1.63"
+    "jquery": "1.11.1",
+    "jquery-validation": "^1.19.1"
   }
 }

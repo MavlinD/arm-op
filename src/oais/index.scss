@@ -16,10 +16,16 @@
     text-align: center;
   }
 
-  h3{
+  h3 {
     font-family: Raleway;
   }
 
+}
+
+.passpq {
+  input.invalid {
+    border-color: red;
+  }
 }
 
 
