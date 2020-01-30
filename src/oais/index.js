@@ -11,14 +11,13 @@ import 'assets/dev.scss';
 import './index.scss';
 import * as Common from './Common';
 import * as T from './Tools';
-import {Form} from "./Tools";
+import {Form, Validator} from "./Tools";
 import 'jquery-validation'
 
 import './tests/fixtures/Паспорт-ФБ1234567-ПЯ123456.pdf'
-import {Validator} from "src/oais/Tools";
 
 const Run = () => {
-    let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2, err_place,
+    let root, root_id, html, rnd, field_1, field_2, aria_desc_1, aria_desc_2, placeholder_1, placeholder_2,
         form, loader,
         link, namePassport, err, btnSubmit
     rnd = Math.round(Math.random() * 1000)

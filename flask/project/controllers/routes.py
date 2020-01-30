@@ -3,13 +3,12 @@
 import os
 from flask import Blueprint, render_template, abort, request, jsonify
 from queryes import controller
-# from stringcolor import *
 from colorama import init, Fore, Style
 
 from webargs import fields, validate
 from webargs.flaskparser import use_args
 
-init()
+init() # colorama
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
