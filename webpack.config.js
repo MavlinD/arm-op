@@ -11,6 +11,7 @@ require('colors')
 process.traceDeprecation = true
 
 console.log(`config loaded successful, process.env = ${process.env.NODE_ENV}`.blue);
+console.log(`config loaded successful, dev.env = ${process.env.DEV_ENV}`.green);
 // colors.disable();
 
 const PATHS = {
@@ -170,7 +171,14 @@ module.exports = {
             // https://webpack.js.org/configuration/dev-server/#devserverproxy
             // target: "http://0.0.0.0:8900/api",
             '/api': {
-                target: "http://arm-pq.web.azot.kmr/api",
+                target(){
+                    if (process.env.DEV === "php") return "http://0.0.0.0:5000/api"
+                    if (process.env.DEV === "oais") return "http://arm-pq.web.azot.kmr/api"
+                    if (process.env.DEV === "local-docker") return "http://0.0.0.0:8900/api"
+                    if (process.env.DEV === "wsgi") return "http://0.0.0.0:5000/api"
+                },
+                // target: "http://0.0.0.0:5000/api",
+                // target: "http://arm-pq.web.azot.kmr/api",
                 pathRewrite: {'^/api': ''},
                 ws: false,
                 changeOrigin: true,

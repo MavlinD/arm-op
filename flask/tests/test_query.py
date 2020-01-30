@@ -157,10 +157,12 @@ class TestQueries(TestCase):
                 # '/prv',
                 # '/ntr',
                 {
-                    'wagon_or_container': 'ФБ123456789',
-                    'consignment': "ПЯ123456"
-                    # 'wagon_or_container': 'ФБ1234567',
-                    # 'consignment': "ПЯ12345"
+                    'data': {
+                        'wagon_or_container': 'ФБ123456789',
+                        'consignment': "ПЯ123456",
+                    },
+                    'select': 'Passport',
+                    'mode': 'get_file',
                 },
                 # 'snc',
                 # 'osp',

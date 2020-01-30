@@ -39,7 +39,8 @@ const Run = () => {
         document.body.insertAdjacentHTML('afterbegin', `<div id="${root_id}"></div>`)
         root = T.gid(root_id)
     }
-
+    // ФБ123456789
+    // ПЯ123456
     html = `<div class="container-fluid div2">
 <div class="row mx-auto">
 <h3 class="mx-auto p-3 w-100 text-center">Паспорт качества</h3>
@@ -71,7 +72,7 @@ const Run = () => {
   <i id="${loader}" class="d-none icon-spin2 animate-spin"></i>
   <i class="icon-paper-plane"></i>
   Получить паспорт</button>
-
+<div id="${err}" style="display: none;" role="alert" class="alert alert-danger"></div>
 </form>
 </div></div>`
 // https://www.philowen.co/blog/force-a-file-to-download-when-link-is-clicked/
@@ -115,8 +116,12 @@ const Run = () => {
             url: '/api',
             type: 'POST',
             data: {
-                wagon_or_container: sels.field_1.value,
-                consignment: sels.field_2.value,
+                select: 'Passport',
+                mode: 'get_file',
+                data: {
+                    wagon_or_container: sels.field_1.value,
+                    consignment: sels.field_2.value,
+                }
             },
             success(a) {
                 // console.log(a.data)
@@ -140,14 +145,17 @@ download="${a.data['path_to_file']}">${namePassport}</a></div>`)
                         }
                     } else {
                         console.log('data not found (!')
-                        $(sels.form).append(`<div id="${err}" style="display: none;" role="alert" 
-class="alert alert-danger"><span>Запрашиваемый ${namePassport} не найден по одной из нижеследующих причин:</br>
+                        let err_place = T.gid(err),
+                            err_mess = `<span>Запрашиваемый ${namePassport} не найден по одной из нижеследующих причин:</br>
 <ul>
 <li>Некорректно введены данные в полях "№ накладной" и/или "№ вагона".
 Проверьте правильность данных и повторите запрос.</li>
 <li>На текущий момент ${namePassport} не сформирован.</li>
-</ul>
-</span></div>`)//
+</ul></span>`
+                        if (err_place) {
+                            err_place.innerHTML = err_mess
+                        }
+                        // $(sels.form).append()//
                         $(`#${link}`).slideUp('fast')
                         $(`#${err}`).slideDown('fast')
                     }
