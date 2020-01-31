@@ -1,42 +1,31 @@
 <?php
-//$r=$_SERVER['DOCUMENT_ROOT'] . '/handler.php';
-//require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+header('Access-Control-Allow-Origin: *');
 require_once './handler.php';
 require_once './SplClassLoader.php';
-//require_once $_SERVER['DOCUMENT_ROOT'] . '/handler.php';
-//require_once $_SERVER['DOCUMENT_ROOT'] . '/SplClassLoader.php';
-//if ($_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
-//    ini_set('display_errors', 'off');
-//}
-
-//echo json_encode(['POST'=>$_POST,'GET'=>$_GET]);
-//echo json_encode([555=>777]);
-//return;
 
 $select = $mode = '';
 $arg = [];
 
 if (isset($_POST) && !empty($_POST)) {
-    if (isset($_POST['select'])) {
-        $select = $_POST['select'];
-    }
-    if (isset($_POST['mode'])) {
-        $mode = $_POST['mode'];
-    }
-    $arg[$mode] = [];
-//    $arg[$mode]['data'] = $_POST;
-        $arg[$mode]['data'] = json_encode($_POST);
+  if (isset($_POST['select'])) {
+    $select = $_POST['select'];
+  }
+  if (isset($_POST['mode'])) {
+    $mode = $_POST['mode'];
+  }
+  $arg[$mode] = [];
+  $arg[$mode]['data'] = json_encode($_POST);
 }
 
 if (isset($_GET) && !empty($_GET)) {
-    if (isset($_GET['select'])) {
-        $select = $_GET['select'];
-    }
-    if (isset($_GET['mode'])) {
-        $mode = $_GET['mode'];
-    }
-    $arg[$mode] = [];
-    $arg[$mode]['data'] = $_GET['data'];
+  if (isset($_GET['select'])) {
+    $select = $_GET['select'];
+  }
+  if (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
+  }
+  $arg[$mode] = [];
+  $arg[$mode]['data'] = $_GET['data'];
 }
 
 $ns = 'Controllers';

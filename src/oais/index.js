@@ -195,7 +195,6 @@ download="${a.data['path_to_file']}">${namePassport}</a></div>`)
         $(`#${err}`).slideUp('fast')
 
         $.ajax({...query()}).then((a)=>{
-          // console.log(77777777777777)
           // console.log(a)
         })
 

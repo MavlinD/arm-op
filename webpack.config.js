@@ -14,10 +14,27 @@ console.log(`config loaded successful, process.env = ${process.env.NODE_ENV}`.bl
 console.log(`config loaded successful, dev.env = ${process.env.DEV_ENV}`.green);
 // colors.disable();
 
+const dist = ()=>{
+  let dist
+  if (process.env.DEV_ENV === "flask") dist = path.join(__dirname, "./flask/project/static")
+  if (process.env.DEV_ENV === "php") dist = path.join(__dirname, "./public_html/static")
+  console.log(`dist = ${dist}`.yellow);
+  return dist
+}
+
+const templates = ()=>{
+  let templates
+  if (process.env.DEV_ENV === "flask") templates = path.join(__dirname, "./flask/project/templates")
+  if (process.env.DEV_ENV === "php") templates = path.join(__dirname, "./public_html")
+  console.log(`templates = ${templates}`.yellow);
+  return templates
+}
+
 const PATHS = {
   src: path.join(__dirname, "./src"),
-  dist: path.join(__dirname, "./flask/project/static"),
-  flask_templates: path.join(__dirname, "./flask/project/templates"),
+  dist: dist(),
+  // dist: path.join(__dirname, "./flask/project/static"),
+  templates: templates(),
   // dist: path.join(__dirname, "./dist"),
   // assets: "js/"
 };
@@ -38,7 +55,7 @@ function resolve(dir) {
 let plugins = [
   new HtmlWebpackPlugin({
     template: `./public/index.html`,
-    filename: process.env.NODE_ENV === "production" ? `${PATHS.flask_templates}/index.html` : `index.html`,
+    filename: process.env.NODE_ENV === "production" ? `${PATHS.templates}/index.html` : `index.html`,
     // filename: `index.html`,
     favicon: './public/favicon.ico',
     // inject: false,
@@ -332,7 +349,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               limit: 10000,
-              name: ('fixtures/[name].[ext]')
+              name: ('passports/[name].[ext]')
             }
           }
         ]
