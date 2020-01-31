@@ -2,14 +2,15 @@
 
 import os
 from flask import Blueprint, render_template, abort, request, jsonify
+from marshmallow import Schema, validates_schema, ValidationError
+
 from queryes import controller
-# from stringcolor import *
 from colorama import init, Fore, Style
 
 from webargs import fields, validate
 from webargs.flaskparser import use_args
 
-init()
+init()  # colorama
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -34,18 +35,38 @@ def handle_error(err):
         return jsonify({"errors": messages}), err.code
 
 
+class DataSchema(Schema):
+    wagon_or_container = fields.Str(validate=[validate.Length(max=11)])
+    consignment = fields.Str(validate=[validate.Length(max=11)])
+
+
 @website_blueprint.route("/api", methods=['POST'])
 @use_args({
-    "wagon_or_container": fields.Str(required=True, validate=[validate.Length(min=8, max=11)]),
-    "consignment": fields.Str(required=True, validate=[validate.Length(min=8, max=8)])
+    "select": fields.Str(validate=[validate.Length(max=11)]),
+    "mode": fields.Str(validate=[validate.Length(max=11)]),
+    'data': fields.Dict(keys=fields.Str(), values=fields.Str())  # !!!
 })
 def get_query_post(args):
     # data = request.json
     # print(cs(request, 'blue'))
     root_dir = './project/'
     passports_dir = 'static/fixtures/'
+
+    schema = DataSchema()
+    try:
+        schema.load(args['data'])
+    except ValidationError as error:
+        err = error
+        response = {
+            'code': 1,
+            'message': 'Something went wrong...:(',
+            'err': err.messages,
+            'query': args,
+        }
+        return response
+
     # subfolders = [f.path for f in os.scandir(root_dir) if f.is_dir()]
-    name_file = 'Паспорт-{}-{}.pdf'.format(args['wagon_or_container'], args['consignment'])
+    name_file = 'Паспорт-{}-{}.pdf'.format(args['data']['wagon_or_container'], args['data']['consignment'])
     is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
     response = {
         'data': {

@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  apache:
+    image: httpd:2.4
+    ports:
+      - 5005:80
+    volumes:
+      - ../public_html:/var/www/html
+      - ../httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    depends_on:
+      - php
+
+  php: # https://vpsadm.ru/raznitsa-mezhdu-rezhimami-php/#_fastcgi
+    build:
+      context: .
+      args:
+        http_proxy: ${http_proxy}
+        no_proxy: ${no_proxy}
+    volumes:
+      - ../public_html:/var/www/html # set this path in IDE (path mapping) absolute path on the server
+# add DataSource
+# docker inspect sap_mariadb_1 | grep IP
+
+# docker container ls
+# docker stop sap_apache_1 sap_mariadb_1 sap_adminer_sap_1 sap_php_1
+
