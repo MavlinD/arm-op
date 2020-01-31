@@ -1,11 +1,17 @@
 <?php
 //$r=$_SERVER['DOCUMENT_ROOT'] . '/handler.php';
 //require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/handler.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/SplClassLoader.php';
+require_once './handler.php';
+require_once './SplClassLoader.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/handler.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/SplClassLoader.php';
 //if ($_SERVER['REMOTE_ADDR'] !== '127.0.0.1') {
 //    ini_set('display_errors', 'off');
 //}
+
+//echo json_encode(['POST'=>$_POST,'GET'=>$_GET]);
+//echo json_encode([555=>777]);
+//return;
 
 $select = $mode = '';
 $arg = [];
