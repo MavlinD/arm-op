@@ -14,18 +14,33 @@ console.log(`config loaded successful, process.env = ${process.env.NODE_ENV}`.bl
 console.log(`config loaded successful, dev.env = ${process.env.DEV_ENV}`.green);
 // colors.disable();
 
-const dist = ()=>{
+const dist = () => {
   let dist
-  if (process.env.DEV_ENV === "flask") dist = path.join(__dirname, "./flask/project/static")
-  if (process.env.DEV_ENV === "php") dist = path.join(__dirname, "./public_html/static")
+  switch (process.env.DEV_ENV) {
+    case 'flask':
+    case 'oais':
+      dist = path.join(__dirname, "./flask/project/static")
+      break
+    case 'php':
+      dist = path.join(__dirname, "./public_html/static")
+      break
+  }
   console.log(`dist = ${dist}`.yellow);
   return dist
 }
 
-const templates = ()=>{
+const templates = () => {
   let templates
-  if (process.env.DEV_ENV === "flask") templates = path.join(__dirname, "./flask/project/templates")
-  if (process.env.DEV_ENV === "php") templates = path.join(__dirname, "./public_html")
+  switch (process.env.DEV_ENV){
+    case 'flask':
+    case 'oais':
+      templates = path.join(__dirname, "./flask/project/templates")
+      break
+    case 'php':
+      templates = path.join(__dirname, "./public_html")
+  }
+  // if (process.env.DEV_ENV === "flask") templates = path.join(__dirname, "./flask/project/templates")
+  // if (process.env.DEV_ENV === "php") templates = path.join(__dirname, "./public_html")
   console.log(`templates = ${templates}`.yellow);
   return templates
 }
@@ -107,7 +122,7 @@ if (process.env.NODE_ENV === "production") {
   );
 }
 
-const target = (url='api') => {
+const target = (url = 'api') => {
   let target
   if (process.env.DEV_ENV === "php") target = `http://0.0.0.0:5005/${url}`
   if (process.env.DEV_ENV === "oais") target = `http://arm-pq.web.azot.kmr/${url}`
@@ -198,16 +213,16 @@ module.exports = {
       // https://webpack.js.org/configuration/dev-server/#devserverproxy
       context: ['/api'],
       // '/api': {
-        target: target('api'),
-        // target: "http://0.0.0.0:8900/api",
-        // target: "http://0.0.0.0:5005/api",
-        // target: "http://arm-pq.web.azot.kmr/api",
-        pathRewrite: {'^/api': ''},
-        ws: false,
-        changeOrigin: true,
-      },
+      target: target('api'),
+      // target: "http://0.0.0.0:8900/api",
+      // target: "http://0.0.0.0:5005/api",
+      // target: "http://arm-pq.web.azot.kmr/api",
+      pathRewrite: {'^/api': ''},
+      ws: false,
+      changeOrigin: true,
+    },
       {
-      context: ['/static/'],
+        context: ['/static/'],
         target: target('static'),
         // target: "http://0.0.0.0:8900/api",
         // target: "http://0.0.0.0:5005/api",
