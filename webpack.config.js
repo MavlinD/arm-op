@@ -19,6 +19,7 @@ const dist = () => {
   switch (process.env.DEV_ENV) {
     case 'flask':
     case 'oais':
+    case 'wsgi':
       dist = path.join(__dirname, "./flask/project/static")
       break
     case 'php':
@@ -34,6 +35,7 @@ const templates = () => {
   switch (process.env.DEV_ENV){
     case 'flask':
     case 'oais':
+    case 'wsgi':
       templates = path.join(__dirname, "./flask/project/templates")
       break
     case 'php':

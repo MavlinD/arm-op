@@ -114,7 +114,13 @@ const Run = () => {
     return {
       url: '/api/',
       // url: '/api/init.php',
-      type: 'POST',
+      // method: 'get',
+      method: 'POST',
+      // headers: {
+        // 'Content-Type': 'application/x-www-form-urlencoded'
+        // 'Content-Type': 'multipart/form-data'
+        // 'Content-Type': 'application/json;charset=utf-8'
+      // },
       data: {
         select: 'Passport',
         mode: 'get_file',
@@ -194,9 +200,27 @@ download="${a.data['path_to_file']}">${namePassport}</a></div>`)
         sels.loader.classList.remove('d-none')
         $(`#${err}`).slideUp('fast')
 
-        $.ajax({...query()}).then((a)=>{
+        // $.ajax({...query()}).then((a)=>{
           // console.log(a)
+        // })
+        let r = query(), body = new FormData()
+        body.set('payload',JSON.stringify(r.data))
+
+        fetch(r.url,{
+          ...r,
+          // body:r.data
+          body
+          // body: new FormData().set('payload',JSON.stringify(r.data))
+        }).then(response=>{
+          console.log('response')
+          return response.text()
+        }).then(response=>{
+          console.log(response)
+
         })
+
+
+
 
       } else {
         console.warn('empty field')

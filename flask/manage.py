@@ -6,7 +6,7 @@ This is the entry point of the Flask application.
 import os
 import unittest
 
-import coverage
+# import coverage
 from flask_script import Manager
 from project import create_app, logger
 
@@ -19,25 +19,25 @@ os.environ["APP_SETTINGS"] = "config.DevelopmentConfig"
 # Defines which parts of the code to include and omit when calculating code coverage.
 abs_path = os.path.abspath(os.path.dirname(__file__)) + '/'
 
-COV = coverage.coverage(
-    branch=True,
-    include=[
-        abs_path + 'project/*',
-        abs_path + 'queryes/*',
-    ],
-    omit=[
-        abs_path + 'tests/*',
-        abs_path + 'project/website/*',
-        # 'project/__init__*',
-    ]
-)
+# COV = coverage.coverage(
+#     branch=True,
+#     include=[
+#         abs_path + 'project/*',
+#         abs_path + 'queryes/*',
+#     ],
+#     omit=[
+#         abs_path + 'tests/*',
+#         abs_path + 'project/website/*',
+#         # 'project/__init__*',
+#     ]
+# )
 # Why can't the pydev debugger work with turbogears?
 # http://pydev.blogspot.com/2007/06/why-cant-pydev-debugger-work-with.html
 # COV.start()
 if os.environ["APP_SETTINGS"] == "config.DevelopmentConfig":
     # from stringcolor import *
     pink = 'DeepPink3'
-    COV.start()  # it's break debug point
+    # COV.start()  # it's break debug point
 
 # APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # TEMPLATE_PATH = os.path.join(APP_PATH, 'static/')
@@ -66,12 +66,12 @@ def cov():
     tests = unittest.TestLoader().discover('tests')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
-        COV.stop()
-        COV.save()
-        print('Coverage Summary:')
-        COV.report()
-        COV.html_report()
-        COV.erase()
+        # COV.stop()
+        # COV.save()
+        # print('Coverage Summary:')
+        # COV.report()
+        # COV.html_report()
+        # COV.erase()
         return 0
     else:
         return 1
