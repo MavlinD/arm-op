@@ -16,10 +16,14 @@ in a separate terminal window.
 
 import logging, json
 import unittest
+from colorama import init, Fore, Style
+
 # from stringcolor import * // have trable to install pkg-resources==0.0.0
-import socketio as socketio
+# import socketio as socketio
 from flask_testing import TestCase
 from project import create_app, logger
+
+init()  # colorama
 
 # Creates a new instance of the Flask application. The reason for this
 # is that we can't interrupt the application instance that is currently
@@ -147,15 +151,10 @@ class TestQueries(TestCase):
 
     def test_post_Query(self):
         # print('\n')
+        # data for FormData request must be one level object
         with self.client:
             # pass
             lst = [
-                # '',
-                # '/',
-                # '/fake',
-                # '/fake/',
-                # '/prv',
-                # '/ntr',
                 {
                     'data': {
                         'wagon_or_container': 'ФБ123456789',
@@ -164,48 +163,10 @@ class TestQueries(TestCase):
                     'select': 'Passport',
                     'mode': 'get_file',
                 },
-                # 'snc',
-                # 'osp',
-                # 'raw',
-                # '/plan_factory',
-                # '/gruz',
-                # '/empty_cargo',
-                # {
-                #     'act': 'lntr',
-                #     'box': 'LNTR2',
-                #     'path': '/Scheme/ViewSvgScheme/4f044795-5de1-471e-bb97-fb175bfed265'
-                # },
-                # '/fake_request',
-                # '/broken_request',
-                # 'org_unit_asou',
-                # 'analytical_control',
-                # '/api'
             ]
 
             for payload in lst:
-                # self.response = self.client.post(tst, data={'name': 'fred', 'passwd': 'secret'})
-                # payload = {
-                #   'wagon': el,
-                #   'consignment': el,
-                # }
-                # dt = jsonify(payload)
-                # dt = json.dumps(payload)
-                # self.response = self.client.post('/api', data={'payload': json.dumps(payload)})
-                # self.response = self.client.post('/api', data={'tst':'jksbdjb'}, follow_redirects=True)
-                # self.response = self.client.post('/api', data=payload, content_type="multipart/form-data")
-                # self.response = self.client.post('/api', data=payload, content_type="application/x-www"
-                #                                                                                 "-form-urlencoded")
-                self.response = self.client.post('/api', data=json.dumps(payload), content_type="application/json")
-                # self.response = self.client.post('/api', data={'act': tst})
-                # self.response = self.client.get(tst)
-
-                # connect to Socket.IO again, but now as a logged in user
-                # socketio_test_client = socketio.test_client(
-                #   app, flask_test_client=self.client)
-
-                # make sure the server accepted the connection
-                # r = socketio_test_client.get_received()
-
+                self.response = self.client.post('/api', data={'payload': json.dumps(payload)})
                 self.assertEqual(self.response.status_code, 200)
                 self.print_response()
 
@@ -213,11 +174,16 @@ class TestQueries(TestCase):
         # print(self.response)
         data = json.loads(self.response.get_data(as_text=True))
         # print(cs(self.test_next_div, 'green'))
+        # print(Fore.GREEN + "{}".format(file_name))
+        # print(Fore.GREEN + file_name)
+        # print(Style.RESET_ALL)
+        print('\n')
         for key in data:
             if type(data) == dict:
-                print("{} is {}".format(key, data[key]))
+                print(Fore.GREEN + "{} is {}".format(key, data[key]))
             else:
-                print("{}".format(key))
+                print(Fore.GREEN + "{}".format(key))
+        print(Style.RESET_ALL)
 
 
 # Runs the tests.

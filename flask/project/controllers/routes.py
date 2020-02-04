@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
+import os, json
 from flask import Blueprint, render_template, abort, request, jsonify
 from marshmallow import Schema, validates_schema, ValidationError
 
@@ -40,43 +40,60 @@ class DataSchema(Schema):
     consignment = fields.Str(validate=[validate.Length(max=11)])
 
 
+class PayloadSchema(Schema):  # http://www.cameronmacleod.com/blog/better-validation-flask-marshmallow
+    select = fields.Str(validate=[validate.Length(max=11)])
+    mode = fields.Str(validate=[validate.Length(max=11)])
+    data = fields.Nested(DataSchema)
+
+
 @website_blueprint.route("/api", methods=['POST'])
-@use_args({
-    "select": fields.Str(validate=[validate.Length(max=11)]),
-    "mode": fields.Str(validate=[validate.Length(max=11)]),
-    'data': fields.Dict(keys=fields.Str(), values=fields.Str())  # !!!
-})
-def get_query_post(args):
-    # data = request.json
+# @json.loads(request.form['payload'])
+# @use_args({
+# "select": json.loads(request.form['payload']),
+# "select": fields.Str(validate=[validate.Length(max=11)]),
+# "mode": fields.Str(validate=[validate.Length(max=11)]),
+# 'data': fields.Dict(keys=fields.Str(), values=fields.Str())  # !!!
+# })
+def get_query_post():
+    # def get_query_post(args):
+    #     data = request
+    #     payload = request.form
+    #     payload=request.json
+    payload = json.loads(request.form['payload'])
+
+    # data = request.json # !!!
     # print(cs(request, 'blue'))
     root_dir = './project/'
     passports_dir = 'static/fixtures/'
 
-    schema = DataSchema()
+    schema = PayloadSchema()
     try:
-        schema.load(args['data'])
+        schema.load(payload)
+        # schema.load(payload['data'])
+        # schema.load(args['data'])
     except ValidationError as error:
         err = error
         response = {
             'code': 1,
             'message': 'Something went wrong...:(',
             'err': err.messages,
-            'query': args,
+            'query': payload,
         }
         return response
 
     # subfolders = [f.path for f in os.scandir(root_dir) if f.is_dir()]
-    name_file = 'Паспорт-{}-{}.pdf'.format(args['data']['wagon_or_container'], args['data']['consignment'])
-    is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
+    # name_file = 'Паспорт-{}-{}.pdf'.format(args['data']['wagon_or_container'], args['data']['consignment'])
+    # is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
     response = {
-        'data': {
-            'path_to_file': '{}{}'.format(passports_dir, name_file),
-            'is_file_exists': is_file_exists,
-            # 'subfolders': subfolders,
-        },
+        # 'data': {
+        # 'path_to_file': '{}{}'.format(passports_dir, name_file),
+        # 'is_file_exists': is_file_exists,
+        # 'subfolders': subfolders,
+        # },
         'code': 0,
         'message': 'Everything goes according to plan...',
-        'query': args,
+        'query': payload,
+        # 'query': args,
     }
 
     # print(Fore.GREEN + "{}".format(file_name))
