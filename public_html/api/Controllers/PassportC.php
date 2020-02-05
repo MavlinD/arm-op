@@ -15,12 +15,8 @@ class PassportC extends Controller
 
   function get_file()
   {
-    $this->decodeRequest($this->request[(string)__FUNCTION__]['data']);
-    $this->setParam('wagon_or_container', $this->request[(string)'data']);
-    $this->setParam('consignment', $this->request[(string)'data']);
-
-    $wagon_or_container = $this->request['data']['wagon_or_container'];
-    $consignment = $this->request['data']['consignment'];
+    $wagon_or_container = $this->setParam('wagon_or_container', $this->request[(string)__FUNCTION__]);
+    $consignment = $this->setParam('consignment', $this->request[(string)__FUNCTION__]);
 
     $this->validateLen($wagon_or_container, 15);
     $this->validateLen($consignment, 15);

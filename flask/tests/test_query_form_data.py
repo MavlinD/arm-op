@@ -157,7 +157,7 @@ class TestQueries(TestCase):
             lst = [
                 {
                     'data': {
-                        'wagon_or_container': 'ФБ123456789',
+                        'wagon_or_container': 'ФБ1234567',
                         'consignment': "ПЯ123456",
                     },
                     'select': 'Passport',

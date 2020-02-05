@@ -63,8 +63,9 @@ def get_query_post():
 
     # data = request.json # !!!
     # print(cs(request, 'blue'))
-    root_dir = './project/'
-    passports_dir = 'static/fixtures/'
+    root_dir = './flask/project/'
+    # root_dir = './project/'
+    passports_dir = 'static/passports/'
 
     schema = PayloadSchema()
     try:
@@ -82,17 +83,19 @@ def get_query_post():
         return response
 
     # subfolders = [f.path for f in os.scandir(root_dir) if f.is_dir()]
-    # name_file = 'Паспорт-{}-{}.pdf'.format(args['data']['wagon_or_container'], args['data']['consignment'])
-    # is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
+    name_file = 'Паспорт-{}-{}.pdf'.format(payload['data']['wagon_or_container'], payload['data']['consignment'])
+    is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
+    full_path_to_file = '{}{}{}'.format(root_dir, passports_dir, name_file)
     response = {
-        # 'data': {
-        # 'path_to_file': '{}{}'.format(passports_dir, name_file),
-        # 'is_file_exists': is_file_exists,
-        # 'subfolders': subfolders,
-        # },
+        'data': {
+            'path_to_file': '{}{}'.format(passports_dir, name_file),
+            'is_file_exists': is_file_exists,
+            # 'subfolders': subfolders,
+        },
         'code': 0,
         'message': 'Everything goes according to plan...',
         'query': payload,
+        'full_path_to_file': full_path_to_file,
         # 'query': args,
     }
 

@@ -3,35 +3,40 @@ header('Access-Control-Allow-Origin: *');
 require_once './handler.php';
 require_once './SplClassLoader.php';
 
-$select = $mode = '';
-$arg = [];
 
-if (isset($_POST) && !empty($_POST)) {
-  if (isset($_POST['select'])) {
-    $select = $_POST['select'];
-  }
-  if (isset($_POST['mode'])) {
-    $mode = $_POST['mode'];
-  }
-  $arg[$mode] = [];
-  $arg[$mode]['data'] = json_encode($_POST);
-}
+class Init
+{
+  public $payload;
+  private $get = false;
+  private $post = false;
 
-if (isset($_GET) && !empty($_GET)) {
-  if (isset($_GET['select'])) {
-    $select = $_GET['select'];
+  public function __construct()
+  {
+    if (isset($_POST) && !empty($_POST)) {
+      $this->post = true;
+      $this->getPayload($_POST);
+      return;
+    }
+
+    if (isset($_GET) && !empty($_GET)) {
+      $this->get = true;
+      $this->getPayload($_GET);
+    }
   }
-  if (isset($_GET['mode'])) {
-    $mode = $_GET['mode'];
+
+  private function getPayload($arr)
+  {
+    if (array_key_exists('payload', $arr)) {
+      $this->payload = json_decode($arr['payload'], true);
+    }
   }
-  $arg[$mode] = [];
-  $arg[$mode]['data'] = $_GET['data'];
 }
 
 $ns = 'Controllers';
+$query = new Init();
 
-$full_path = $ns . '\\' . $select . 'C'; // для наглядности в IDE, да и секьюрнее так), models mark as 'M'
+$full_path = $ns . '\\' . $query->payload['select'] . 'C'; // для наглядности в IDE, да и секьюрнее так), models mark as 'M'
 
-$Request = new $full_path($arg);
+$Request = new $full_path($query->payload['mode']);
 $Request->encodeResponse();
 $Request->showResponse();

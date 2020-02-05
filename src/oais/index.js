@@ -123,11 +123,18 @@ const Run = () => {
       // },
       data: {
         select: 'Passport',
-        mode: 'get_file',
-        data: {
-          wagon_or_container: sels.field_1.value,
-          consignment: sels.field_2.value,
+        mode: {
+          get_file:
+            {
+              wagon_or_container: sels.field_1.value,
+              consignment: sels.field_2.value,
+            }
         }
+        // mode: 'get_file',
+        // data: {
+        //   wagon_or_container: sels.field_1.value,
+        //   consignment: sels.field_2.value,
+        // }
       },
       success(a) {
         console.log(a.data)
@@ -208,15 +215,16 @@ download="${a.data['path_to_file']}">${namePassport}</a></div>`)
 
         fetch(r.url,{
           ...r,
-          // body:r.data
           body
-          // body: new FormData().set('payload',JSON.stringify(r.data))
         }).then(response=>{
           console.log('response')
-          return response.text()
+          return response.json()
         }).then(response=>{
           console.log(response)
+            r.success(response)
 
+        }).catch(err=>{
+            r.error(err)
         })
 
 
