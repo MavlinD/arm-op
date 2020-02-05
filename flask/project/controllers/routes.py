@@ -36,14 +36,14 @@ def handle_error(err):
 
 
 class DataSchema(Schema):
-    wagon_or_container = fields.Str(validate=[validate.Length(max=11)])
-    consignment = fields.Str(validate=[validate.Length(max=11)])
+    wagon_or_container = fields.Str(required=True, validate=[validate.Length(max=11)])
+    consignment = fields.Str(required=True, validate=[validate.Length(max=11)])
 
 
 class PayloadSchema(Schema):  # http://www.cameronmacleod.com/blog/better-validation-flask-marshmallow
-    select = fields.Str(validate=[validate.Length(max=11)])
-    mode = fields.Str(validate=[validate.Length(max=11)])
-    data = fields.Nested(DataSchema)
+    # pass
+    select = fields.Str(required=True, validate=[validate.Length(max=11)])
+    mode = fields.Dict(required=True)
 
 
 @website_blueprint.route("/api", methods=['POST'])
@@ -55,10 +55,6 @@ class PayloadSchema(Schema):  # http://www.cameronmacleod.com/blog/better-valida
 # 'data': fields.Dict(keys=fields.Str(), values=fields.Str())  # !!!
 # })
 def get_query_post():
-    # def get_query_post(args):
-    #     data = request
-    #     payload = request.form
-    #     payload=request.json
     payload = json.loads(request.form['payload'])
 
     # data = request.json # !!!
@@ -67,11 +63,10 @@ def get_query_post():
     # root_dir = './project/'
     passports_dir = 'static/passports/'
 
-    schema = PayloadSchema()
     try:
-        schema.load(payload)
-        # schema.load(payload['data'])
-        # schema.load(args['data'])
+        PayloadSchema().load(payload)
+        DataSchema().load(payload['mode']['get_file'])
+
     except ValidationError as error:
         err = error
         response = {
@@ -83,7 +78,9 @@ def get_query_post():
         return response
 
     # subfolders = [f.path for f in os.scandir(root_dir) if f.is_dir()]
-    name_file = 'Паспорт-{}-{}.pdf'.format(payload['data']['wagon_or_container'], payload['data']['consignment'])
+    name_file = 'Паспорт-{}-{}.pdf'.format(payload['mode']['get_file']['wagon_or_container'],
+                                           payload['mode']['get_file']['consignment'])
+    # name_file = 'Паспорт-{}-{}.pdf'.format(payload['data']['wagon_or_container'], payload['data']['consignment'])
     is_file_exists = os.path.exists('{}{}{}'.format(root_dir, passports_dir, name_file))
     full_path_to_file = '{}{}{}'.format(root_dir, passports_dir, name_file)
     response = {

@@ -113,14 +113,7 @@ const Run = () => {
   const query = () => {
     return {
       url: '/api/',
-      // url: '/api/init.php',
-      // method: 'get',
       method: 'POST',
-      // headers: {
-      //   'Content-Type': 'application/x-www-form-urlencoded'
-        // 'Content-Type': 'multipart/form-data'
-        // 'Content-Type': 'application/json;charset=utf-8'
-      // },
       data: {
         select: 'Passport',
         mode: {
@@ -130,11 +123,6 @@ const Run = () => {
               consignment: sels.field_2.value,
             }
         }
-        // mode: 'get_file',
-        // data: {
-        //   wagon_or_container: sels.field_1.value,
-        //   consignment: sels.field_2.value,
-        // }
       },
       success(a) {
         console.log(a.data)
@@ -207,27 +195,22 @@ download="${a.data['path_to_file']}">${namePassport}</a></div>`)
         sels.loader.classList.remove('d-none')
         $(`#${err}`).slideUp('fast')
 
-        // $.ajax({...query()}).then((a)=>{
-          // console.log(a)
-        // })
         let r = query(), body = new FormData()
-        body.set('payload',JSON.stringify(r.data))
+        body.set('payload', JSON.stringify(r.data))
 
-        fetch(r.url,{
+        fetch(r.url, {
+          // mode: 'no-cors',
           ...r,
           body
-        }).then(response=>{
+        }).then(response => {
           console.log('response')
           return response.json()
-        }).then(response=>{
+        }).then(response => {
           console.log(response)
-            r.success(response)
-
-        }).catch(err=>{
-            r.error(err)
+          r.success(response)
+        }).catch(err => {
+          r.error(err)
         })
-
-
 
 
       } else {

@@ -58,97 +58,6 @@ class TestQueries(TestCase):
         """Defines what should be done after every single test in this test group."""
         pass
 
-    def test_get_Query(self):
-        # print('\n')
-        with self.client:
-            pass
-
-            lst = [
-                # '',
-                # '/',
-                # '/fake',
-                # '/fake/',
-                # '/prv',
-                # '/ntr',
-                # '/bsp',
-                # '/raw',
-                # '/plan_factory',
-                # '/gruz',
-                # '/empty_cargo',
-                # {
-                #     'act': 'lntr',
-                #     'box': 'LNTR2',
-                #     'path': '/Scheme/ViewSvgScheme/4f044795-5de1-471e-bb97-fb175bfed265'
-                # },
-                # '/lntr',
-                # '/fake_request',
-                # '/broken_request',
-                # 'org_unit_asou',
-                # 'analytical_control',
-                # '/api'
-            ]
-
-            for payload in lst:
-                # self.response = self.client.post(tst, data={'name': 'fred', 'passwd': 'secret'})
-                # payload = {
-                #     'act': tst,
-                # }
-                # dt = jsonify(payload)
-                # dt = json.dumps(payload)
-                # self.response = self.client.post('/api', data=dt, content_type="application/json")
-                # self.response = self.client.post('/api', data={'act': tst})
-                # self.response = self.client.post(payload)
-                self.response = self.client.get(payload)  # !!!
-                # self.response = self.client.get(payload['act'])
-                self.assertEqual(self.response.status_code, 200)
-                self.print_response()
-
-    def Otest_empty_post_Query(self):
-        # print('\n')
-        with self.client:
-            pass
-
-            lst = [
-                # '',
-                # '/',
-                # '/fake',
-                # '/fake/',
-                # '/prv',
-                # '/ntr',
-                '/bsp',
-                # '/raw',
-                # '/plan_factory',
-                # '/gruz',
-                # '/empty_cargo',
-                # {
-                #     'act': 'lntr',
-                #     'box': 'LNTR2',
-                #     'path': '/Scheme/ViewSvgScheme/4f044795-5de1-471e-bb97-fb175bfed265'
-                # },
-                # '/lntr',
-                # '/osp',
-                # '/fake_request',
-                # '/broken_request',
-                # 'org_unit_asou',
-                # 'analytical_control',
-                # '/api'
-            ]
-
-            for payload in lst:
-                # self.response = self.client.post(tst, data={'name': 'fred', 'passwd': 'secret'})
-                # payload = {
-                #     'act': tst,
-                # }
-                # dt = jsonify(payload)
-                # dt = json.dumps(payload)
-                # self.response = self.client.post('/api', data=dt, content_type="application/json")
-                # self.response = self.client.post('/api', data={'act': tst})
-                self.response = self.client.post(payload)
-                # self.response = self.client.get(payload) # !!!
-                # self.response = self.client.get(payload['act'])
-                self.assertEqual(self.response.status_code, 200)
-                self.print_response()
-
     def test_post_Query(self):
         # print('\n')
         # data for FormData request must be one level object
@@ -156,12 +65,20 @@ class TestQueries(TestCase):
             # pass
             lst = [
                 {
-                    'data': {
-                        'wagon_or_container': 'ФБ1234567',
-                        'consignment': "ПЯ123456",
-                    },
+                    # 'data':
                     'select': 'Passport',
-                    'mode': 'get_file',
+                    'mode': {
+                        'get_file': {
+                            'wagon_or_container': 'ФБ1234567',
+                            'consignment': "ПЯ123456",
+                        },
+                    }
+                    # 'data': {
+                    #     'wagon_or_container': 'ФБ1234567',
+                    #     'consignment': "ПЯ123456",
+                    # },
+                    # 'select': 'Passport',
+                    # 'mode': 'get_file',
                 },
             ]
 

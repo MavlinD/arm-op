@@ -9,3 +9,14 @@
 #</FilesMatch>
 
 Header set Access-Control-Allow-Origin "*"
+#DirectoryIndexRedirect on
+#Header always set Referrer-Policy "unsafe-url"
+#DirectorySlash On
+#FallbackResource /index.php
+#DirectoryIndex /
+#DirectoryIndex index.php
+
+#RewriteCond %{REQUEST_URI} /$
+#RewriteCond %{REQUEST_URI} !\.
+#RewriteCond %{REQUEST_METHOD} !POST$
+#RewriteRule ^(.*)/$ / [R=301,L]
