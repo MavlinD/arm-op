@@ -76,6 +76,7 @@ scp /home/mdv/Projects/arm-op/src/tests/fixtures/Паспорт-ФБ123456789-П
 ## python commands:
 
 pip3 freeze>flask/requirements.txt
+python3 -m venv env
 
 curl -i -H "Content-Type: application/json" -X POST -d '{"wagon":"11111", "consignment": "fizz bizz"}' http://localhost:5000/api
 curl -i -H "Content-Type: application/json" -X POST -d '{"wagon":"11111", "consignment": "fizz bizz"}' http://oais01.azot.kmr:8900/api
