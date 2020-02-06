@@ -25,35 +25,27 @@ logger = logging.getLogger(__name__)
 
 
 # db = SQLAlchemy()
-# DATABASE = '/tmp/flaskr.db'
 DATABASE = "./database.db"
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
+# todo comment in production
 
-conn = sqlite3.connect(DATABASE)
-cur = conn.cursor()
+if os.path.exists(DATABASE):
+    os.remove(DATABASE)
 if not os.path.exists(DATABASE):
-    # conn = sqlite3.connect(DATABASE)
-    # cur = conn.cursor()
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
     cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
     conn.commit()
-    cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '111');")
+    cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '999');")
     cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
     cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
     cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
     conn.commit()
-else:
-    cur.execute("DELETE FROM users")
-    conn.commit()
-    cur.execute("INSERT INTO users VALUES('efwew', 'ln', '999');")
-    cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-    cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-    cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
-    conn.commit()
-conn.close()
+    conn.close()
 
 
 def get_db():
@@ -61,21 +53,6 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
-
-# def get_db():
-#     """Если ещё нет соединения с базой данных, открыть новое - для
-#     текущего контекста приложения
-#     """
-#     if not hasattr(g, 'sqlite_db'):
-#         g.sqlite_db = connect_db()
-#     return g.sqlite_db
-#
-#
-# @app.teardown_appcontext
-# def close_db(error):
-#     """Closes the database again at the end of the request."""
-#     if hasattr(g, 'sqlite_db'):
-#         g.sqlite_db.close()
 
 
 def create_app():
@@ -95,14 +72,14 @@ def create_app():
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
 
-    app.config.update(dict(
-        DATABASE=os.path.join(app.root_path, 'flaskr.db'),
-        DEBUG=True,
-        SECRET_KEY='development key',
-        USERNAME='admin',
-        PASSWORD='123'
-    ))
-    app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+    # app.config.update(dict(
+    #     DATABASE=os.path.join(app.root_path, 'flaskr.db'),
+    #     DEBUG=True,
+    #     SECRET_KEY='development key',
+    #     USERNAME='admin',
+    #     PASSWORD='123'
+    # ))
+    # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
     # db = SQLAlchemy(app)
 
@@ -123,23 +100,13 @@ def create_app():
     def close_connection(exception):
         db = getattr(g, '_database', None)
         if db is not None:
-            print('++++++++ close_connection ++++++++++++')
+            print('++++++++ close connection with DB ++++++++++++')
             db.close()
 
     # Blueprints are used for scalability. If you want to read more about it, visit:
     # http://flask.pocoo.org/docs/0.12/blueprints/
     from project.controllers.routes import website_blueprint
     app.register_blueprint(website_blueprint)
-
-    # connect_db(app)
-
-    # get_db()
-    # app.rv = sqlite3.connect(app.config['DATABASE'])
-    # app.rv.row_factory = sqlite3.Row
-
-    # if not hasattr(g, 'sqlite_db'):
-    #     g.sqlite_db = connect_db(app)
-    # app.connect = g.sqlite_db
 
     return app
 
