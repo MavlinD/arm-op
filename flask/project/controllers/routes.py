@@ -15,56 +15,6 @@ from project import DATABASE, get_db
 
 init()  # colorama
 
-# DATABASE = "./database.db"
-
-# if not os.path.exists(DATABASE):
-# conn = sqlite3.connect(DATABASE)
-# cur = conn.cursor()
-# if os.path.exists(DATABASE):
-#     os.remove(DATABASE)
-# conn = sqlite3.connect(DATABASE)
-# cur = conn.cursor()
-# if not os.path.exists(DATABASE):
-#     # conn = sqlite3.connect(DATABASE)
-#     # cur = conn.cursor()
-#     cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
-#     conn.commit()
-#     cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '111');")
-#     cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-#     cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-#     cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
-#     conn.commit()
-# else:
-#     cur.execute("DELETE FROM users")
-#     conn.commit()
-#     cur.execute("INSERT INTO users VALUES('efwew', 'ln', '999');")
-#     cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-#     cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-#     cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
-#     conn.commit()
-# conn.close()
-
-
-# if not os.path.exists(DATABASE):
-#     conn = sqlite3.connect(DATABASE)
-#     cur = conn.cursor()
-#     cur.execute("DROP TABLE users")
-#     cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
-#     conn.commit()
-#     cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '55');")
-#     cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-#     cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-#     cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
-#     conn.commit()
-#     conn.close()
-#
-# def get_db():
-#     db = getattr(g, '_database', None)
-#     if db is None:
-#         db = g._database = sqlite3.connect(DATABASE)
-#     return db
-
-
 website_blueprint = Blueprint('website_blueprint', __name__)
 
 
@@ -72,6 +22,9 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 # @website_blueprint.route('/', methods=['GET'])
 def index():
     # Controller logic should go here
+    req = request
+    addr = request.remote_addr
+    write_log()
     cur = get_db().cursor()
     res = cur.execute("select * from users")
     return render_template("index.html", users=res)
@@ -110,8 +63,12 @@ def get_query_post():
     root_dir = './flask/project/'
     # root_dir = './project/'
     passports_dir = 'static/passports/'
+    # req = request
+    addr = request.remote_addr
+    # write_log()
 
     try:
+        # pass
         PayloadSchema().load(payload)
         DataSchema().load(payload['mode']['get_file'])
 
@@ -150,3 +107,24 @@ def get_query_post():
 
 def run_query(arg):
     return controller.Controller(arg).run_act()
+
+
+def write_log():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    # cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
+    # conn.commit()
+    # return
+    addr = request.remote_addr
+    # cur.execute("INSERT OR IGNORE INTO users VALUES(?, ?, ?)", ('tst', addr, '159'))
+    i = 0
+    i = + 10
+    # cur.execute("INSERT OR REPLACE INTO users VALUES(?, ?)", (addr, 'tst'))
+    cur.execute("INSERT OR REPLACE INTO users VALUES(?, ?, ?)", (addr, 'tst', i))
+
+    # cur.execute("INSERT INTO users (a,b,c) VALUES('Mike', 'request.remote_addr', '6464');")
+    # cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
+    # cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
+    # cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
+    conn.commit()
+    conn.close()

@@ -17,12 +17,12 @@ import sqlite3
 
 from flask import Flask, jsonify, request, g
 from flask_cors import CORS
+
 # from flask_sqlalchemy import SQLAlchemy
 
 # Defines the format of the logging to include the time and to use the INFO logging level or worse.
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 # db = SQLAlchemy()
 DATABASE = "./database.db"
@@ -33,19 +33,23 @@ PASSWORD = 'default'
 
 # todo comment in production
 
-if os.path.exists(DATABASE):
-    os.remove(DATABASE)
-if not os.path.exists(DATABASE):
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
-    conn.commit()
-    cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '999');")
-    cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-    cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-    cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
-    conn.commit()
-    conn.close()
+# if os.path.exists(DATABASE):
+#     os.remove(DATABASE)
+conn = sqlite3.connect(DATABASE)
+cur = conn.cursor()
+# cur.execute("DROP TABLE IF EXISTS users")
+cur.execute(
+    # "CREATE TABLE IF NOT EXISTS users (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c2 TEXT);")
+"CREATE TABLE IF NOT EXISTS users (a TEXT, b TEXT, c TEXT, PRIMARY KEY (a, b, c));")
+# "CREATE TABLE IF NOT EXISTS users (a TEXT, b TEXT, c TEXT, CONSTRAINT new_pk ON CONFLICT IGNORE PRIMARY KEY (a, b, c));")
+# "CREATE TABLE IF NOT EXISTS users (a TEXT UNIQUE ON CONFLICT IGNORE PRIMARY KEY, b TEXT, c TEXT, UNIQUE(a,b,c));")
+# cur.execute("DELETE FROM users")
+
+# cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '999');")
+# cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
+# cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
+conn.commit()
+conn.close()
 
 
 def get_db():
@@ -109,5 +113,3 @@ def create_app():
     app.register_blueprint(website_blueprint)
 
     return app
-
-
