@@ -20,6 +20,7 @@ const dist = () => {
         case 'flask':
         case 'oais':
         case 'wsgi':
+        case 'local-docker':
             dist = path.join(__dirname, "./flask/project/static")
             break
         case 'php':
@@ -52,13 +53,12 @@ const templates = () => {
         case 'flask':
         case 'oais':
         case 'wsgi':
+        case 'local-docker':
             templates = path.join(__dirname, "./flask/project/templates")
             break
         case 'php':
             templates = path.join(__dirname, "./public_html")
     }
-    // if (process.env.DEV_ENV === "flask") templates = path.join(__dirname, "./flask/project/templates")
-    // if (process.env.DEV_ENV === "php") templates = path.join(__dirname, "./public_html")
     console.log(`templates = ${templates}`.yellow);
     return templates
 }
@@ -66,9 +66,7 @@ const templates = () => {
 const PATHS = {
     src: path.join(__dirname, "./src"),
     dist: dist(),
-    // dist: path.join(__dirname, "./flask/project/static"),
     templates: templates(),
-    // dist: path.join(__dirname, "./dist"),
     // assets: "js/"
 };
 
@@ -103,7 +101,6 @@ let plugins = [
         // dry: true
         // Simulate the removal of files
         dry: !clean()
-        // dry: process.env.NODE_ENV === "production"
     }),
     new MiniCssExtractPlugin({
         filename: "css/[name].css"
@@ -389,8 +386,6 @@ module.exports = {
                 ]
             },
         ]
-    }
-    ,
+    },
     plugins: plugins
-}
-;
+};

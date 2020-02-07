@@ -10,12 +10,8 @@ from here.
 import os
 import logging
 import sqlite3
-# from project import config
-# project # as project
 
-# import flask.config as config
-
-from flask import Flask, jsonify, request, g
+from flask import Flask, g
 from flask_cors import CORS
 
 # from flask_sqlalchemy import SQLAlchemy
@@ -25,11 +21,11 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y
 logger = logging.getLogger(__name__)
 
 # db = SQLAlchemy()
-DATABASE = "./database.db"
-DEBUG = True
+DATABASE = "./passQ.db"
+DEBUG = False
 SECRET_KEY = 'development key'
 USERNAME = 'admin'
-PASSWORD = 'default'
+PASSWORD = 'oais'
 
 # todo comment in production
 
@@ -37,17 +33,11 @@ PASSWORD = 'default'
 #     os.remove(DATABASE)
 conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
-# cur.execute("DROP TABLE IF EXISTS users")
+# cur.execute("DROP TABLE IF EXISTS workLog")
 cur.execute(
-    # "CREATE TABLE IF NOT EXISTS users (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c2 TEXT);")
-"CREATE TABLE IF NOT EXISTS users (a TEXT, b TEXT, c TEXT, PRIMARY KEY (a, b, c));")
-# "CREATE TABLE IF NOT EXISTS users (a TEXT, b TEXT, c TEXT, CONSTRAINT new_pk ON CONFLICT IGNORE PRIMARY KEY (a, b, c));")
-# "CREATE TABLE IF NOT EXISTS users (a TEXT UNIQUE ON CONFLICT IGNORE PRIMARY KEY, b TEXT, c TEXT, UNIQUE(a,b,c));")
-# cur.execute("DELETE FROM users")
-
-# cur.execute("INSERT INTO users VALUES('Mike', 'Tyson', '999');")
-# cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-# cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
+    "CREATE TABLE IF NOT EXISTS workLog(ip_addr TEXT NOT NULL, "
+    "wagon_or_container TEXT NOT NULL, consignment TEXT NOT NULL,"
+    " count INT DEFAULT 1 NOT NULL, PRIMARY KEY(ip_addr, wagon_or_container, consignment));")
 conn.commit()
 conn.close()
 

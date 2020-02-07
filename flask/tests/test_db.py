@@ -3,6 +3,7 @@
 import logging
 import sqlite3
 import unittest
+from collections import defaultdict
 
 from colorama import Fore
 from flask import request
@@ -41,17 +42,44 @@ class TestWebsite(TestCase):
         """Defines what should be done after every single test in this test group."""
         pass
 
+    def t0est_index_page_successful(self):
+        db = sqlite3.connect(':memory:')
+        c = db.cursor()
+        c.execute("CREATE TABLE status(location TEXT, arrival TEXT, departure TEXT)")
+        SQL = "INSERT INTO status VALUES (:location, :arrival, :departure)"
+        # build each row as a defaultdict
+        f = lambda: None  # use str if you prefer
+        row1 = defaultdict(f, {'location': 'place1', 'departure': '1000'})
+        row2 = defaultdict(f, {'location': 'place2', 'arrival': '1010'})
+        rows = (row1, row2)
+        # insert rows, executemany can be safely used without additional code
+        c.executemany(SQL, rows)
+        db.commit()
+        # print result
+        c.execute("SELECT * FROM status")
+        print(list(zip(*c.description))[0])
+        for r in c.fetchall():
+            print(r)
+        db.close()
+
     def test_index_page_successful(self):
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
-        # cur = get_db().cursor()
-        addr = request.remote_addr
-        i=0
-        i=+1
-        cur.execute("INSERT INTO users VALUES(?, ?, ?)", (addr, 'tst', i))
+        sql = "INSERT OR REPLACE INTO workLog " \
+              "VALUES(:ip_addr, :wagon_or_container,:consignment, " \
+              "(SELECT count FROM workLog " \
+              "WHERE wagon_or_container=:wagon_or_container " \
+              "AND consignment=:consignment AND ip_addr=:ip_addr)+1)"
+        f = lambda: None  # use str if you prefer
+        row = defaultdict(f, {
+            'ip_addr': 'addr',
+            'wagon_or_container': 'test',
+            'consignment': 'tst',
+        })
+        cur.execute(sql, row)
         conn.commit()
 
-        res = cur.execute("select * from users")
+        res = cur.execute("select * from workLog")
         print('\n')
         for row in res:
             print(row)

@@ -2,16 +2,16 @@
 
 import os, json
 import sqlite3
+from collections import defaultdict
 
-from flask import Blueprint, render_template, abort, request, jsonify, g
-from marshmallow import Schema, validates_schema, ValidationError
+from flask import Blueprint, render_template, request, jsonify
+from marshmallow import Schema, ValidationError
 
 from queryes import controller
 from colorama import init, Fore, Style
 
 from webargs import fields, validate
-# from flask import db
-from project import DATABASE, get_db
+from project import DATABASE
 
 init()  # colorama
 
@@ -19,16 +19,8 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 
 
 @website_blueprint.route('/')
-# @website_blueprint.route('/', methods=['GET'])
 def index():
-    # Controller logic should go here
-    req = request
-    addr = request.remote_addr
-    write_log()
-    cur = get_db().cursor()
-    res = cur.execute("select * from users")
-    return render_template("index.html", users=res)
-    # return render_template('index.html')
+    return render_template('index.html')
 
 
 # Return validation errors as JSON
@@ -60,18 +52,16 @@ def get_query_post():
     payload = json.loads(request.form['payload'])
     # data = request.json # !!!
     # print(cs(request, 'blue'))
-    root_dir = './flask/project/'
-    # root_dir = './project/'
+    # root_dir = './flask/project/'
+    root_dir = './project/'
     passports_dir = 'static/passports/'
     # req = request
-    addr = request.remote_addr
-    # write_log()
+    # addr = request.remote_addr
 
     try:
         # pass
         PayloadSchema().load(payload)
         DataSchema().load(payload['mode']['get_file'])
-
     except ValidationError as error:
         err = error
         response = {
@@ -82,6 +72,7 @@ def get_query_post():
         }
         return response
 
+    write_log(payload['mode']['get_file']['wagon_or_container'], payload['mode']['get_file']['consignment'])
     # subfolders = [f.path for f in os.scandir(root_dir) if f.is_dir()]
     name_file = 'Паспорт-{}-{}.pdf'.format(payload['mode']['get_file']['wagon_or_container'],
                                            payload['mode']['get_file']['consignment'])
@@ -98,7 +89,6 @@ def get_query_post():
         'query': payload,
         'full_path_to_file': full_path_to_file,
     }
-
     # print(Fore.GREEN + "{}".format(file_name))
     # print(Fore.GREEN + file_name)
     # print(Style.RESET_ALL)
@@ -109,22 +99,28 @@ def run_query(arg):
     return controller.Controller(arg).run_act()
 
 
-def write_log():
+def write_log(wagon_or_container, consignment):
+    # https://stackoverflow.com/questions/17169642/python-sqlite-insert-named-parameters-or-null
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    # cur.execute("CREATE TABLE users (fname TEXT, lname TEXT, age INTEGER);")
-    # conn.commit()
-    # return
     addr = request.remote_addr
-    # cur.execute("INSERT OR IGNORE INTO users VALUES(?, ?, ?)", ('tst', addr, '159'))
-    i = 0
-    i = + 10
-    # cur.execute("INSERT OR REPLACE INTO users VALUES(?, ?)", (addr, 'tst'))
-    cur.execute("INSERT OR REPLACE INTO users VALUES(?, ?, ?)", (addr, 'tst', i))
-
-    # cur.execute("INSERT INTO users (a,b,c) VALUES('Mike', 'request.remote_addr', '6464');")
-    # cur.execute("INSERT INTO users VALUES('Thomas', 'Jasper', '40');")
-    # cur.execute("INSERT INTO users VALUES('Jerry', 'Mouse', '40');")
-    # cur.execute("INSERT INTO users VALUES('Peter', 'Pan', '40');")
+    sql = "INSERT OR REPLACE INTO workLog " \
+          "VALUES(:ip_addr, :wagon_or_container,:consignment, " \
+          "(SELECT count FROM workLog " \
+          "WHERE wagon_or_container=:wagon_or_container " \
+          "AND consignment=:consignment AND ip_addr=:ip_addr)+1)"
+    f = lambda: None  # use str if you prefer
+    row = defaultdict(f, {
+        'ip_addr': addr,
+        'wagon_or_container': wagon_or_container,
+        'consignment': consignment,
+    })
+    cur.execute(sql, row)
     conn.commit()
+
+    res = cur.execute("select * from workLog")
+    print('\n')
+    for row in res:
+        print(row)
+        # print(Fore.GREEN + row)
     conn.close()
