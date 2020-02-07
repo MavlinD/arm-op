@@ -17,7 +17,7 @@ in a separate terminal window.
 import logging, json
 import unittest
 # from stringcolor import * // have trable to install pkg-resources==0.0.0
-
+import socketio as socketio
 from flask_testing import TestCase
 from project import create_app, logger
 
@@ -190,13 +190,27 @@ class TestQueries(TestCase):
                 # }
                 # dt = jsonify(payload)
                 # dt = json.dumps(payload)
+                # self.response = self.client.post('/api', data={'payload': json.dumps(payload)})
+                # self.response = self.client.post('/api', data={'tst':'jksbdjb'}, follow_redirects=True)
+                # self.response = self.client.post('/api', data=payload, content_type="multipart/form-data")
+                # self.response = self.client.post('/api', data=payload, content_type="application/x-www"
+                #                                                                                 "-form-urlencoded")
                 self.response = self.client.post('/api', data=json.dumps(payload), content_type="application/json")
                 # self.response = self.client.post('/api', data={'act': tst})
                 # self.response = self.client.get(tst)
+
+                # connect to Socket.IO again, but now as a logged in user
+                # socketio_test_client = socketio.test_client(
+                #   app, flask_test_client=self.client)
+
+                # make sure the server accepted the connection
+                # r = socketio_test_client.get_received()
+
                 self.assertEqual(self.response.status_code, 200)
                 self.print_response()
 
     def print_response(self):
+        # print(self.response)
         data = json.loads(self.response.get_data(as_text=True))
         # print(cs(self.test_next_div, 'green'))
         for key in data:

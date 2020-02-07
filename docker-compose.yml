@@ -8,19 +8,15 @@ services:
     volumes:
       - ./flask:/usr/src/app
     networks:
-      #        - none
-      #        - network_name3
       - default
-    #        - mynetwork
-    #        - host
-    #        - net
-    #      env_file: ./flask/secret/.env
+    env_file:
+      - ./flask/secret/.env
     environment:
       - APP_SETTINGS=config.ProductionConfig
       #        - APP_SETTINGS=config.DevelopmentConfig
       #        - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/db_dev
       #        - DATABASE_TEST_URL=postgresql://postgres:postgres@postgres:5432/db_test
-      - SECRET_KEY=${SECRET_KEY}
+#      - SECRET_KEY=${SECRET_KEY}
     #      http://docs.gunicorn.org/en/stable/settings.html#reload
     command: gunicorn --worker-class eventlet -w 4 --reload -b 0.0.0.0:8000 manage:app
     #      depends_on:
@@ -28,7 +24,6 @@ services:
     #      links:
     #        - postgres
     restart: always
-    # command: gunicorn --worker-class eventlet -w 4 -b 0.0.0.0:8000 wsgi:app
 
   nginx_arm_pq:
     build: ./nginx
@@ -38,12 +33,7 @@ services:
       - 8900:80
     restart: always
     networks:
-      #        - none
-      #        - network_name3
       - default
-    #        - mynetwork
-    #        - host
-    #        - net
     volumes:
       - ./flask/project/static:/usr/share/nginx/html/static
     depends_on:
@@ -53,19 +43,5 @@ services:
 #  postgres:
 # ping app14.azot.kmr
 
-
 networks:
-#  default:
-#    external:
-#    net:
-#      name: host
-#      name: mynetwork
-#      name: network_name3
-#  none:
-#  network_name3:
-#  mynetwork:
-#  host:
-  net:
-#    driver: none
-#    flask_arm_pq:nginx_arm_pq
-
+  default:

@@ -39,10 +39,6 @@ class Controller
       if (array_key_exists($arg, $arr)) {
         return $this->getRequestParam($arr, $arg);
       }
-    } else {
-      if (array_key_exists($arg, $this->request['data'])) {
-        return $this->getRequestParam($this->request['data'], $arg);
-      }
     }
     return null;
   }
@@ -77,12 +73,7 @@ class Controller
     throw new \Exception($rc['message'] . $name, $rc['code']);
   }
 
-  public function decodeRequest($req)
-  {
-    $this->request = (array)json_decode($req, true);
-  }
-
-  /**
+    /**
    * общий метод валидации данных в запросе
    * @param $name
    * @param $len

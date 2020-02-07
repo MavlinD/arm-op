@@ -9,9 +9,11 @@ from here.
 
 import os
 import logging
+import sqlite3
 
-from flask import Flask, jsonify, request
+from flask import Flask, g
 from flask_cors import CORS
+
 # from flask_sqlalchemy import SQLAlchemy
 
 # Defines the format of the logging to include the time and to use the INFO logging level or worse.
@@ -19,10 +21,35 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y
 logger = logging.getLogger(__name__)
 
 # db = SQLAlchemy()
+DATABASE = "./passQ.db"
+DEBUG = False
+SECRET_KEY = 'development key'
+USERNAME = 'admin'
+PASSWORD = 'oais'
+
+# todo comment in production
+
+# if os.path.exists(DATABASE):
+#     os.remove(DATABASE)
+conn = sqlite3.connect(DATABASE)
+cur = conn.cursor()
+# cur.execute("DROP TABLE IF EXISTS workLog")
+cur.execute(
+    "CREATE TABLE IF NOT EXISTS workLog(ip_addr TEXT NOT NULL, "
+    "wagon_or_container TEXT NOT NULL, consignment TEXT NOT NULL,"
+    " count INT DEFAULT 1 NOT NULL, PRIMARY KEY(ip_addr, wagon_or_container, consignment));")
+conn.commit()
+conn.close()
+
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
 
 def create_app():
-
     """
     Flask application factory that creates app instances.
 
@@ -39,6 +66,17 @@ def create_app():
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
 
+    # app.config.update(dict(
+    #     DATABASE=os.path.join(app.root_path, 'flaskr.db'),
+    #     DEBUG=True,
+    #     SECRET_KEY='development key',
+    #     USERNAME='admin',
+    #     PASSWORD='123'
+    # ))
+    # app.config.from_envvar('FLASKR_SETTINGS', silent=True)
+
+    # db = SQLAlchemy(app)
+
     # @app.errorhandler(404)
     # def page_not_found(e):
     #     """Return JSON instead of HTML for HTTP errors."""
@@ -51,6 +89,13 @@ def create_app():
     #     ), 200
 
     # db.init_app(app)
+    # helper to close
+    @app.teardown_appcontext
+    def close_connection(exception):
+        db = getattr(g, '_database', None)
+        if db is not None:
+            print('++++++++ close connection with DB ++++++++++++')
+            db.close()
 
     # Blueprints are used for scalability. If you want to read more about it, visit:
     # http://flask.pocoo.org/docs/0.12/blueprints/
